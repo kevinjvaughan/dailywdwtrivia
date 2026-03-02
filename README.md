@@ -11,8 +11,6 @@ Daily Walt Disney World Trivia game with different categories, questions change 
 
 ## `data/questions.json` format
 
-JSON does not support comments, so the schema is documented here.
-
 The file is an array of question objects:
 
 - `id` (string): unique identifier (e.g. `"mk-001"`)
