@@ -1,0 +1,128 @@
+[
+  {
+    "id": "mk-001",
+    "category": "magic-kingdom",
+    "question": "What is the name of the icon castle in Magic Kingdom?",
+    "choices": ["Cinderella Castle", "Sleeping Beauty Castle", "Beast's Castle", "Aurora Castle"],
+    "answerIndex": 0
+  },
+  {
+    "id": "mk-002",
+    "category": "magic-kingdom",
+    "question": "Which land is home to TRON Lightcycle / Run?",
+    "choices": ["Tomorrowland", "Fantasyland", "Adventureland", "Frontierland"],
+    "answerIndex": 0
+  },
+  {
+    "id": "epcot-001",
+    "category": "epcot",
+    "question": "In what year did EPCOT open at Walt Disney World?",
+    "choices": ["1971", "1982", "1994", "2001"],
+    "answerIndex": 1
+  },
+  {
+    "id": "epcot-002",
+    "category": "epcot",
+    "question": "Which pavilion is known for the 'Frozen Ever After' attraction?",
+    "choices": ["Norway", "Mexico", "Germany", "United Kingdom"],
+    "answerIndex": 0
+  },
+  {
+    "id": "hs-001",
+    "category": "hollywood-studios",
+    "question": "Star Wars: Galaxy's Edge is located in which park?",
+    "choices": ["Disney's Hollywood Studios", "EPCOT", "Animal Kingdom", "Magic Kingdom"],
+    "answerIndex": 0
+  },
+  {
+    "id": "hs-002",
+    "category": "hollywood-studios",
+    "question": "What is the name of the land themed to Toy Story?",
+    "choices": ["Toy Story Land", "Pixar Place", "Andy's Backyard", "Playtime Plaza"],
+    "answerIndex": 0
+  },
+  {
+    "id": "ak-001",
+    "category": "animal-kingdom",
+    "question": "What is the name of the tree icon located in the center of Disney's Animal Kingdom?",
+    "choices": ["Tree of Life", "Tree of Wonders", "Discovery Tree", "Nature's Crown"],
+    "answerIndex": 0
+  },
+  {
+    "id": "ak-002",
+    "category": "animal-kingdom",
+    "question": "Which land is home to Avatar Flight of Passage?",
+    "choices": ["Pandora – The World of Avatar", "Africa", "Asia", "Dinoland U.S.A."],
+    "answerIndex": 0
+  },
+  {
+    "id": "res-001",
+    "category": "resorts",
+    "question": "Which monorail loop includes Disney's Contemporary Resort?",
+    "choices": ["Resort monorail loop", "EPCOT loop", "Skyliner loop", "Watercraft loop"],
+    "answerIndex": 0
+  },
+  {
+    "id": "res-002",
+    "category": "resorts",
+    "question": "Which resort is known for its Victorian-style architecture on the shore of Seven Seas Lagoon?",
+    "choices": ["Disney's Grand Floridian Resort & Spa", "Disney's Polynesian Village Resort", "Disney's Yacht Club Resort", "Disney's BoardWalk Inn"],
+    "answerIndex": 0
+  },
+  {
+    "id": "din-001",
+    "category": "dining",
+    "question": "Which park is home to 'Be Our Guest Restaurant'?",
+    "choices": ["Magic Kingdom", "EPCOT", "Animal Kingdom", "Hollywood Studios"],
+    "answerIndex": 0
+  },
+  {
+    "id": "din-002",
+    "category": "dining",
+    "question": "Where would you find the iconic Dole Whip (classic location)?",
+    "choices": ["Aloha Isle in Magic Kingdom", "Connections Eatery in EPCOT", "Flame Tree Barbecue in Animal Kingdom", "Docking Bay 7 in Hollywood Studios"],
+    "answerIndex": 0
+  },
+  {
+    "id": "trans-001",
+    "category": "transportation",
+    "question": "What is the name of the gondola transportation system at Walt Disney World?",
+    "choices": ["Disney Skyliner", "Disney Skyway", "Disney Gondolas", "Aerial Transit"],
+    "answerIndex": 0
+  },
+  {
+    "id": "trans-002",
+    "category": "transportation",
+    "question": "Which transportation option connects Magic Kingdom to the Ticket and Transportation Center?",
+    "choices": ["Monorail and ferryboat", "Skyliner and buses", "Train and tram", "Friendship boats only"],
+    "answerIndex": 0
+  },
+  {
+    "id": "show-001",
+    "category": "shows-entertainment",
+    "question": "Fantasmic! is a nighttime spectacular in which park?",
+    "choices": ["Disney's Hollywood Studios", "Magic Kingdom", "EPCOT", "Animal Kingdom"],
+    "answerIndex": 0
+  },
+  {
+    "id": "show-002",
+    "category": "shows-entertainment",
+    "question": "Festival of the Lion King is a stage show in which park?",
+    "choices": ["Disney's Animal Kingdom", "Disney's Hollywood Studios", "EPCOT", "Magic Kingdom"],
+    "answerIndex": 0
+  },
+  {
+    "id": "hist-001",
+    "category": "history",
+    "question": "What year did Walt Disney World Resort open?",
+    "choices": ["1955", "1971", "1982", "1992"],
+    "answerIndex": 1
+  },
+  {
+    "id": "hist-002",
+    "category": "history",
+    "question": "Which was the first theme park to open at Walt Disney World?",
+    "choices": ["Magic Kingdom", "EPCOT", "Disney's Hollywood Studios", "Disney's Animal Kingdom"],
+    "answerIndex": 0
+  }
+]
