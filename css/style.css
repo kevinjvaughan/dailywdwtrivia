@@ -1,6 +1,7 @@
 :root {
     /* Theme colors (tweak these to re-skin the site quickly) */
-    --bg: #57d6fb;
+    /* Background sky color */
+    --bg: #8ee7ff;
     --tile: #7a4ff2;
     --tile-hover: #6b41e7;
     --tile-active: #5f37dc;
