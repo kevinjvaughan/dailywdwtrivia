@@ -21,8 +21,32 @@
         local("Waltograph"),
         local("Waltograph42"),
         url("../assets/fonts/Waltograph.woff2") format("woff2"),
+        url("../assets/fonts/waltograph.woff2") format("woff2"),
+        url("../assets/fonts/Waltograph42.woff2") format("woff2"),
         url("../assets/fonts/Waltograph.woff") format("woff"),
+        url("../assets/fonts/waltograph.woff") format("woff"),
+        url("../assets/fonts/Waltograph42.woff") format("woff"),
         url("../assets/fonts/Waltograph.ttf") format("truetype"),
+        url("../assets/fonts/waltograph.ttf") format("truetype"),
+        url("../assets/fonts/Waltograph42.ttf") format("truetype"),
+        url("../assets/fonts/Waltograph.otf") format("opentype");
+}
+
+@font-face {
+    font-family: "Waltograph42";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src:
+        local("Waltograph42"),
+        local("Waltograph"),
+        url("../assets/fonts/Waltograph42.woff2") format("woff2"),
+        url("../assets/fonts/Waltograph.woff2") format("woff2"),
+        url("../assets/fonts/Waltograph42.woff") format("woff"),
+        url("../assets/fonts/Waltograph.woff") format("woff"),
+        url("../assets/fonts/Waltograph42.ttf") format("truetype"),
+        url("../assets/fonts/Waltograph.ttf") format("truetype"),
+        url("../assets/fonts/Waltograph42.otf") format("opentype"),
         url("../assets/fonts/Waltograph.otf") format("opentype");
 }
 
