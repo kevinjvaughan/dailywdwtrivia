@@ -1,5 +1,121 @@
+:root {
+    --bg: #28c3f0;
+    --tile: #7a4ff2;
+    --tile-hover: #6b41e7;
+    --tile-active: #5f37dc;
+    --text: #111;
+    --tile-text: #fff;
+    --shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    --radius: 22px;
+    --font-disney: "Waltograph", "Waltograph42", "Waltograph UI", "Comic Sans MS", cursive;
+}
+
+@font-face {
+    font-family: "Waltograph";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Waltograph"), local("Waltograph42");
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
-    background-color: #87CEEB;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.page {
+    width: min(980px, 92vw);
+    margin: 0 auto;
+    padding: clamp(28px, 4vw, 56px) 0 clamp(32px, 6vw, 72px);
+    display: grid;
+    justify-items: center;
+    gap: clamp(18px, 3.2vw, 34px);
+}
+
+.title {
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-disney);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: 0.5px;
+    font-size: clamp(40px, 5vw, 64px);
+}
+
+.category-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(18px, 3vw, 30px);
+}
+
+.category-card {
+    appearance: none;
+    border: 0;
+    background: var(--tile);
+    color: var(--tile-text);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    height: clamp(92px, 12vw, 132px);
+    padding: 18px 16px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
+}
+
+.category-card__label {
+    font-family: var(--font-disney);
+    font-weight: 400;
+    line-height: 1.1;
+    font-size: clamp(20px, 2.25vw, 30px);
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
+}
+
+.category-card:hover {
+    background: var(--tile-hover);
+    transform: translateY(-1px);
+}
+
+.category-card:active {
+    background: var(--tile-active);
+    transform: translateY(0);
+}
+
+.category-card:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.9);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .category-card {
+        transition: none;
+    }
+}
+
+@media (max-width: 720px) {
+    .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 440px) {
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
 }
