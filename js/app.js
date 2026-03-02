@@ -43,7 +43,8 @@ function setModalOpen(isOpen) {
 
 async function loadQuestions() {
   if (QUESTIONS_CACHE) return QUESTIONS_CACHE;
-  const res = await fetch("data/questions.json", { cache: "no-store" });
+  const cacheBust = `v=${Date.now()}`;
+  const res = await fetch(`data/questions.json?${cacheBust}`, { cache: "no-store" });
   if (!res.ok) throw new Error(`Failed to load questions.json (${res.status})`);
   const data = await res.json();
   if (!Array.isArray(data)) throw new Error("questions.json must be an array");
