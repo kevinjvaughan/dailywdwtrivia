@@ -1,4 +1,5 @@
 :root {
+    /* Theme colors (tweak these to re-skin the site quickly) */
     --bg: #57d6fb;
     --tile: #7a4ff2;
     --tile-hover: #6b41e7;
@@ -7,11 +8,19 @@
     --tile-text: #fff;
     --shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     --radius: 22px;
+
+    /* Primary site font stack (Waltograph first; fall back to cursive) */
     --font-disney: "Waltograph", "Waltograph42", "Waltograph UI", "Comic Sans MS", cursive;
+
+    /* Modal surface styling */
     --panel-bg: rgba(255, 255, 255, 0.92);
     --panel-border: rgba(0, 0, 0, 0.08);
 }
 
+/* Waltograph font loading:
+   - `local(...)` uses the visitor's installed font (if present)
+   - `url(...)` serves the font from this repo for everyone else
+   Note: GitHub Pages is case-sensitive, so we include lowercase variants. */
 @font-face {
     font-family: "Waltograph";
     font-style: normal;
@@ -35,6 +44,7 @@
         url("../assets/fonts/waltograph42.otf") format("opentype");
 }
 
+/* Some Waltograph downloads register as "Waltograph42" instead of "Waltograph". */
 @font-face {
     font-family: "Waltograph42";
     font-style: normal;
@@ -74,6 +84,7 @@ body {
     font-family: var(--font-disney);
 }
 
+/* Modal overlay (opened by JS by toggling [data-open="true"]) */
 .modal {
     position: fixed;
     inset: 0;
@@ -169,6 +180,7 @@ body {
     gap: 10px;
 }
 
+/* Answer buttons get marked by JS with data-state="correct|wrong" after selection. */
 .answer-btn {
     appearance: none;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -245,6 +257,7 @@ body {
     outline-offset: 2px;
 }
 
+/* Main page layout */
 .page {
     width: min(880px, 92vw);
     margin: 0 auto;
@@ -274,6 +287,7 @@ body {
     justify-items: center;
 }
 
+/* Category tiles (the 3×3 purple buttons) */
 .category-card {
     appearance: none;
     border: 0;
@@ -321,6 +335,7 @@ body {
     }
 }
 
+/* Mobile layout: reduce columns as the screen narrows */
 @media (max-width: 720px) {
     .category-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));

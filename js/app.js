@@ -1,3 +1,5 @@
+// UI categories must match `data-category` attributes in index.html and
+// `category` values in data/questions.json.
 const CATEGORY_LABELS = {
   "magic-kingdom": "Magic Kingdom",
   epcot: "Epcot",
@@ -10,6 +12,7 @@ const CATEGORY_LABELS = {
   history: "History",
 };
 
+// Data shape expected from data/questions.json.
 /** @typedef {{ id: string, category: string, question: string, choices: string[], answerIndex: number, explanation?: string }} TriviaQuestion */
 
 /** @type {TriviaQuestion[] | null} */
@@ -25,6 +28,7 @@ function $(sel) {
   return document.querySelector(sel);
 }
 
+// Modal open/close is done by toggling a data attribute (keeps CSS simple).
 function setModalOpen(isOpen) {
   const modal = $("#question-modal");
   if (!modal) return;
@@ -41,8 +45,10 @@ function setModalOpen(isOpen) {
   }
 }
 
+// Loads questions once and caches them in-memory.
 async function loadQuestions() {
   if (QUESTIONS_CACHE) return QUESTIONS_CACHE;
+  // Cache-bust to avoid stale JSON when testing locally / after deploys.
   const cacheBust = `v=${Date.now()}`;
   const res = await fetch(`data/questions.json?${cacheBust}`, { cache: "no-store" });
   if (!res.ok) throw new Error(`Failed to load questions.json (${res.status})`);
@@ -52,6 +58,7 @@ async function loadQuestions() {
   return QUESTIONS_CACHE;
 }
 
+// Pick a question in the category, avoiding repeating the last one (if possible).
 function sampleQuestion(questions, category) {
   const inCat = questions.filter((q) => q && q.category === category);
   if (inCat.length === 0) return null;
@@ -73,6 +80,7 @@ function clearAnswersUI() {
   if (feedback) feedback.textContent = "";
 }
 
+// Render a question into the modal and wire up answer buttons.
 function renderQuestion(q) {
   const categoryEl = $("#question-category");
   const questionEl = $("#question-text");
@@ -105,6 +113,7 @@ function renderQuestion(q) {
       const buttons = answersEl.querySelectorAll("button.answer-btn");
       buttons.forEach((b) => b.setAttribute("disabled", "true"));
 
+      // We highlight correct/wrong and show feedback text; we don't track score yet.
       if (idx === q.answerIndex) {
         btn.dataset.state = "correct";
         if (feedbackEl) feedbackEl.textContent = "Correct!";
@@ -136,6 +145,7 @@ async function openCategory(category) {
   }
 }
 
+// Wires up all interactions (category selection, modal close, next question, deep link).
 function initUI() {
   const buttons = document.querySelectorAll("[data-category]");
   for (const btn of buttons) {
@@ -147,18 +157,21 @@ function initUI() {
     });
   }
 
+  // Close modal via click on backdrop or close button.
   document.addEventListener("click", (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
     if (t.hasAttribute("data-close-modal")) setModalOpen(false);
   });
 
+  // Esc closes the modal.
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") setModalOpen(false);
   });
 
   const nextBtn = $("#next-question");
   if (nextBtn) {
+    // "Next question" keeps the same category and selects another question (if available).
     nextBtn.addEventListener("click", async () => {
       const category = state.category;
       if (!category) return;
