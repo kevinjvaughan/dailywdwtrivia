@@ -339,9 +339,10 @@ body {
 }
 
 /* Decorative Mickey image on the right side of the screen */
-.mickey-figure {
+/* EDITED: Added .minnie-figure to share dimensions and base styling */
+.mickey-figure,
+.minnie-figure {
     position: fixed;
-    right: max(30px, 2vw);
     top: 50%;
     transform: translateY(-50%);
     max-height: clamp(450px, 42vh, 800px);
@@ -351,11 +352,31 @@ body {
     z-index: 0;
 }
 
+.mickey-figure {
+    right: max(30px, 2vw);
+}
+
+/* EDITED: Position Minnie Mouse on the left side */
+.minnie-figure {
+    left: max(30px, 2vw);
+}
+
 @media (max-width: 720px) {
-    .mickey-figure {
+
+    /* EDITED: Added .minnie-figure to share mobile dimensions */
+    .mickey-figure,
+    .minnie-figure {
         max-height: clamp(180px, 32vh, 280px);
-        right: max(24px, 8vw);
         opacity: 0.85;
+    }
+
+    .mickey-figure {
+        right: max(24px, 8vw);
+    }
+
+    /* EDITED: Position Minnie Mouse on the left side for mobile */
+    .minnie-figure {
+        left: max(24px, 8vw);
     }
 }
 
