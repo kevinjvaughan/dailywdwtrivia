@@ -265,6 +265,8 @@ body {
 }
 
 .category-grid {
+    width: fit-content;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, auto);
     gap: clamp(18px, 3vw, 30px);
