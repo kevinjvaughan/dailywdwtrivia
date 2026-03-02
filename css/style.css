@@ -341,10 +341,10 @@ body {
 /* Decorative Mickey image on the right side of the screen */
 .mickey-figure {
     position: fixed;
-    right: max(12px, 4vw);
+    right: max(30px, 2vw);
     top: 50%;
     transform: translateY(-50%);
-    max-height: clamp(160px, 28vh, 260px);
+    max-height: clamp(450px, 42vh, 800px);
     width: auto;
     pointer-events: none;
     user-select: none;
@@ -353,8 +353,8 @@ body {
 
 @media (max-width: 720px) {
     .mickey-figure {
-        max-height: clamp(120px, 24vh, 200px);
-        right: max(4px, 2.5vw);
+        max-height: clamp(180px, 32vh, 280px);
+        right: max(24px, 8vw);
         opacity: 0.85;
     }
 }
