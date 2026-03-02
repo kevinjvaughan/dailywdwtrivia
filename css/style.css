@@ -8,6 +8,8 @@
     --shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     --radius: 22px;
     --font-disney: "Waltograph", "Waltograph42", "Waltograph UI", "Comic Sans MS", cursive;
+    --panel-bg: rgba(255, 255, 255, 0.92);
+    --panel-border: rgba(0, 0, 0, 0.08);
 }
 
 @font-face {
@@ -15,7 +17,13 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local("Waltograph"), local("Waltograph42");
+    src:
+        local("Waltograph"),
+        local("Waltograph42"),
+        url("../assets/fonts/Waltograph.woff2") format("woff2"),
+        url("../assets/fonts/Waltograph.woff") format("woff"),
+        url("../assets/fonts/Waltograph.ttf") format("truetype"),
+        url("../assets/fonts/Waltograph.otf") format("opentype");
 }
 
 *,
@@ -34,6 +42,173 @@ body {
     padding: 0;
     background: var(--bg);
     color: var(--text);
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    z-index: 50;
+}
+
+.modal[data-open="true"] {
+    display: flex;
+}
+
+.modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(3px);
+}
+
+.modal__panel {
+    position: relative;
+    width: min(760px, 94vw);
+    border-radius: 18px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+}
+
+.modal__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 18px 0;
+}
+
+.modal__kicker {
+    font-family: var(--font-disney);
+    font-size: 20px;
+    letter-spacing: 0.4px;
+    opacity: 0.85;
+}
+
+.modal__title {
+    margin: 2px 0 0;
+    font-family: var(--font-disney);
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 1.05;
+}
+
+.icon-btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.7);
+    transition: background-color 140ms ease, color 140ms ease;
+}
+
+.icon-btn:hover {
+    background: rgba(0, 0, 0, 0.06);
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.icon-btn:focus-visible {
+    outline: 3px solid rgba(0, 0, 0, 0.35);
+    outline-offset: 2px;
+}
+
+.modal__body {
+    padding: 14px 18px 18px;
+}
+
+.question {
+    margin: 0 0 14px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.45;
+}
+
+.answers {
+    display: grid;
+    gap: 10px;
+}
+
+.answer-btn {
+    appearance: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 14px;
+    padding: 12px 12px;
+    text-align: left;
+    cursor: pointer;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-size: 16px;
+    transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
+}
+
+.answer-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(0, 0, 0, 0.18);
+}
+
+.answer-btn[disabled] {
+    cursor: default;
+    transform: none;
+    opacity: 0.75;
+}
+
+.answer-btn[data-state="correct"] {
+    background: rgba(46, 204, 113, 0.18);
+    border-color: rgba(46, 204, 113, 0.55);
+}
+
+.answer-btn[data-state="wrong"] {
+    background: rgba(231, 76, 60, 0.18);
+    border-color: rgba(231, 76, 60, 0.55);
+}
+
+.feedback {
+    margin: 12px 0 0;
+    min-height: 22px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-size: 16px;
+}
+
+.modal__footer {
+    padding: 0 18px 18px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.secondary-btn {
+    appearance: none;
+    border: 0;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-size: 15px;
+    transition: background-color 120ms ease, transform 120ms ease;
+}
+
+.secondary-btn:hover {
+    background: rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+}
+
+.secondary-btn:active {
+    transform: translateY(0);
+}
+
+.secondary-btn:focus-visible {
+    outline: 3px solid rgba(0, 0, 0, 0.35);
+    outline-offset: 2px;
 }
 
 .page {
