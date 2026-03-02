@@ -266,6 +266,8 @@ body {
     display: grid;
     justify-items: center;
     gap: clamp(18px, 3.2vw, 34px);
+    position: relative;
+    z-index: 1;
 }
 
 .title {
@@ -333,6 +335,29 @@ body {
 @media (prefers-reduced-motion: reduce) {
     .category-card {
         transition: none;
+    }
+}
+
+/* Large decorative "Mickey ears" glyph on the left side using Waltograph */
+.ears-mark {
+    position: fixed;
+    left: max(12px, 4vw);
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-disney);
+    font-size: clamp(120px, 22vw, 220px);
+    color: rgba(255, 255, 255, 0.35);
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+@media (max-width: 720px) {
+    .ears-mark {
+        opacity: 0.25;
+        font-size: clamp(96px, 30vw, 180px);
+        left: max(4px, 2.5vw);
     }
 }
 
