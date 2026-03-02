@@ -246,7 +246,7 @@ body {
 }
 
 .page {
-    width: min(980px, 92vw);
+    width: min(880px, 92vw);
     margin: 0 auto;
     padding: clamp(28px, 4vw, 56px) 0 clamp(32px, 6vw, 72px);
     display: grid;
@@ -265,10 +265,11 @@ body {
 }
 
 .category-grid {
-    width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, auto);
     gap: clamp(18px, 3vw, 30px);
+    justify-content: center;
+    justify-items: center;
 }
 
 .category-card {
@@ -278,7 +279,8 @@ body {
     color: var(--tile-text);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    height: clamp(92px, 12vw, 132px);
+    width: 210px;
+    height: clamp(92px, 11vw, 128px);
     padding: 18px 16px;
     display: grid;
     place-items: center;
