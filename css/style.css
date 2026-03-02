@@ -338,26 +338,24 @@ body {
     }
 }
 
-/* Large decorative "Mickey ears" glyph on the left side using Waltograph */
-.ears-mark {
+/* Decorative Mickey image on the right side of the screen */
+.mickey-figure {
     position: fixed;
-    left: max(12px, 4vw);
+    right: max(12px, 4vw);
     top: 50%;
     transform: translateY(-50%);
-    font-family: var(--font-disney);
-    font-size: clamp(120px, 22vw, 220px);
-    color: rgba(255, 255, 255, 0.35);
-    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    max-height: clamp(160px, 28vh, 260px);
+    width: auto;
     pointer-events: none;
     user-select: none;
     z-index: 0;
 }
 
 @media (max-width: 720px) {
-    .ears-mark {
-        opacity: 0.25;
-        font-size: clamp(96px, 30vw, 180px);
-        left: max(4px, 2.5vw);
+    .mickey-figure {
+        max-height: clamp(120px, 24vh, 200px);
+        right: max(4px, 2.5vw);
+        opacity: 0.85;
     }
 }
 
