@@ -111,7 +111,8 @@ function renderQuestion(q) {
         btn.dataset.state = "wrong";
         const correctBtn = answersEl.querySelectorAll("button.answer-btn")[q.answerIndex];
         if (correctBtn instanceof HTMLElement) correctBtn.dataset.state = "correct";
-        if (feedbackEl) feedbackEl.textContent = "Not quite — try another category or hit Next question.";
+        const correctChoice = q.choices[q.answerIndex];
+        if (feedbackEl) feedbackEl.textContent = `Not quite — correct answer: ${correctChoice}`;
       }
     });
     answersEl.appendChild(btn);
