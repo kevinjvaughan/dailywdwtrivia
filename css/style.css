@@ -29,7 +29,10 @@
         url("../assets/fonts/Waltograph.ttf") format("truetype"),
         url("../assets/fonts/waltograph.ttf") format("truetype"),
         url("../assets/fonts/Waltograph42.ttf") format("truetype"),
-        url("../assets/fonts/Waltograph.otf") format("opentype");
+        url("../assets/fonts/Waltograph.otf") format("opentype"),
+        url("../assets/fonts/Waltograph42.otf") format("opentype"),
+        url("../assets/fonts/waltograph.otf") format("opentype"),
+        url("../assets/fonts/waltograph42.otf") format("opentype");
 }
 
 @font-face {
@@ -47,7 +50,9 @@
         url("../assets/fonts/Waltograph42.ttf") format("truetype"),
         url("../assets/fonts/Waltograph.ttf") format("truetype"),
         url("../assets/fonts/Waltograph42.otf") format("opentype"),
-        url("../assets/fonts/Waltograph.otf") format("opentype");
+        url("../assets/fonts/waltograph42.otf") format("opentype"),
+        url("../assets/fonts/Waltograph.otf") format("opentype"),
+        url("../assets/fonts/waltograph.otf") format("opentype");
 }
 
 *,
@@ -66,6 +71,7 @@ body {
     padding: 0;
     background: var(--bg);
     color: var(--text);
+    font-family: var(--font-disney);
 }
 
 .modal {
@@ -152,9 +158,10 @@ body {
 
 .question {
     margin: 0 0 14px;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    font-size: 18px;
-    line-height: 1.45;
+    font-family: var(--font-disney);
+    font-size: 26px;
+    line-height: 1.22;
+    letter-spacing: 0.2px;
 }
 
 .answers {
@@ -168,10 +175,11 @@ body {
     background: rgba(255, 255, 255, 0.85);
     border-radius: 14px;
     padding: 12px 12px;
-    text-align: left;
+    text-align: center;
     cursor: pointer;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    font-size: 16px;
+    font-family: var(--font-disney);
+    font-size: 24px;
+    line-height: 1.1;
     transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
 }
 
@@ -199,8 +207,9 @@ body {
 .feedback {
     margin: 12px 0 0;
     min-height: 22px;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    font-size: 16px;
+    font-family: var(--font-disney);
+    font-size: 22px;
+    line-height: 1.15;
 }
 
 .modal__footer {
@@ -216,8 +225,9 @@ body {
     border-radius: 14px;
     padding: 10px 14px;
     cursor: pointer;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    font-size: 15px;
+    font-family: var(--font-disney);
+    font-size: 22px;
+    letter-spacing: 0.2px;
     transition: background-color 120ms ease, transform 120ms ease;
 }
 
