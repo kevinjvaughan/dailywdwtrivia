@@ -320,15 +320,13 @@ body {
 .category-card[data-state="correct"] {
     background: rgba(46, 204, 113, 1);
     box-shadow: none;
-    cursor: default;
-    pointer-events: none;
+    cursor: pointer;
 }
 
 .category-card[data-state="wrong"] {
     background: rgba(231, 76, 60, 1);
     box-shadow: none;
-    cursor: default;
-    pointer-events: none;
+    cursor: pointer;
 }
 
 .category-card:not([disabled]):hover {
