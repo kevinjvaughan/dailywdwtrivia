@@ -191,6 +191,40 @@ function initUI() {
   if (initialHash && CATEGORY_LABELS[initialHash]) {
     openCategory(initialHash);
   }
+
+  initFooterStats();
+}
+
+function initFooterStats() {
+  const dateEl = $("#game-date");
+  const timerEl = $("#game-timer");
+  if (!dateEl || !timerEl) return;
+
+  // Set today's date (e.g., "Monday, March 2nd")
+  const today = new Date();
+  const options = { weekday: 'long', month: 'long', day: 'numeric' };
+
+  // Custom logic to add "st", "nd", "rd", "th" to the day
+  const rawDate = today.toLocaleDateString('en-US', options);
+  const day = today.getDate();
+  let suffix = "th";
+  if (day % 10 === 1 && day !== 11) suffix = "st";
+  else if (day % 10 === 2 && day !== 12) suffix = "nd";
+  else if (day % 10 === 3 && day !== 13) suffix = "rd";
+
+  // The default locale string looks like "Monday, March 2". We append the suffix.
+  dateEl.textContent = rawDate + suffix;
+
+  // Timer logic
+  let secondsElapsed = 0;
+  setInterval(() => {
+    secondsElapsed++;
+    const minutes = Math.floor(secondsElapsed / 60);
+    const seconds = secondsElapsed % 60;
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+    timerEl.textContent = `${formattedMinutes}:${formattedSeconds}`;
+  }, 1000);
 }
 
 if (document.readyState === "loading") {
