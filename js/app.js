@@ -108,7 +108,6 @@ function clearAnswersUI() {
 
 // Render a question into the modal and wire up answer buttons.
 function renderQuestion(q) {
-  const categoryEl = $("#question-category");
   const questionEl = $("#question-text");
   const answersEl = $("#answers");
   const feedbackEl = $("#feedback");
@@ -116,14 +115,12 @@ function renderQuestion(q) {
   if (!questionEl || !answersEl) return;
 
   if (!q) {
-    if (categoryEl) categoryEl.textContent = "";
     questionEl.textContent = "No questions found for this category yet.";
     answersEl.textContent = "";
     if (feedbackEl) feedbackEl.textContent = "";
     return;
   }
 
-  if (categoryEl) categoryEl.textContent = CATEGORY_LABELS[q.category] ?? q.category;
   questionEl.textContent = q.question;
   answersEl.textContent = "";
   if (feedbackEl) feedbackEl.textContent = "";
