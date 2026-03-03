@@ -1,5 +1,5 @@
 # wdwtrivia
-Daily Walt Disney World Trivia game with different categories, questions change every 24 hours.
+Daily Walt Disney World Trivia game with 9 different categories, one question per category, questions change every 24 hours.
 
 ## Project structure
 
