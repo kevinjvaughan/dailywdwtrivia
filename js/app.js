@@ -51,10 +51,13 @@ function loadGameState() {
   return {};
 }
 
-function saveCategoryState(category, isCorrect) {
+function saveCategoryState(category, isCorrect, answerIndex) {
   const key = getTodayKey();
   const stateObj = loadGameState();
-  stateObj[category] = isCorrect ? 'correct' : 'wrong';
+  stateObj[category] = {
+    stateString: isCorrect ? 'correct' : 'wrong',
+    selectedIndex: answerIndex
+  };
   localStorage.setItem('wdwtrivia_state', JSON.stringify({
     date: key,
     categories: stateObj
@@ -126,11 +129,33 @@ function renderQuestion(q) {
   answersEl.textContent = "";
   if (feedbackEl) feedbackEl.textContent = "";
 
+  const savedState = loadGameState()[q.category];
+  const hasAnswered = !!savedState;
+
   q.choices.forEach((choice, idx) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "answer-btn";
     btn.textContent = choice;
+
+    // If they already answered this category today, lock the buttons and show the outcome immediately
+    if (hasAnswered) {
+      btn.setAttribute("disabled", "true");
+      if (idx === q.answerIndex) {
+        btn.dataset.state = "correct";
+      } else if (idx === savedState.selectedIndex) {
+        btn.dataset.state = "wrong";
+      }
+
+      // Show feedback immediately based on past outcome
+      if (savedState.stateString === "correct") {
+        if (feedbackEl) feedbackEl.textContent = "Correct!";
+      } else {
+        const correctChoice = q.choices[q.answerIndex];
+        if (feedbackEl) feedbackEl.textContent = `Not quite — correct answer: ${correctChoice}`;
+      }
+    }
+
     btn.addEventListener("click", () => {
       const buttons = answersEl.querySelectorAll("button.answer-btn");
       buttons.forEach((b) => b.setAttribute("disabled", "true"));
@@ -139,7 +164,7 @@ function renderQuestion(q) {
       if (idx === q.answerIndex) {
         btn.dataset.state = "correct";
         if (feedbackEl) feedbackEl.textContent = "Correct!";
-        saveCategoryState(q.category, true);
+        saveCategoryState(q.category, true, idx);
         updateCategoryCardUI(q.category, 'correct');
       } else {
         btn.dataset.state = "wrong";
@@ -147,7 +172,7 @@ function renderQuestion(q) {
         if (correctBtn instanceof HTMLElement) correctBtn.dataset.state = "correct";
         const correctChoice = q.choices[q.answerIndex];
         if (feedbackEl) feedbackEl.textContent = `Not quite — correct answer: ${correctChoice}`;
-        saveCategoryState(q.category, false);
+        saveCategoryState(q.category, false, idx);
         updateCategoryCardUI(q.category, 'wrong');
       }
     });
@@ -172,12 +197,11 @@ function initUI() {
   for (const btn of buttons) {
     const category = btn.getAttribute("data-category");
     if (category && gameState[category]) {
-      btn.setAttribute("data-state", gameState[category]);
+      btn.setAttribute("data-state", gameState[category].stateString);
       btn.setAttribute("disabled", "true");
     }
 
     btn.addEventListener("click", () => {
-      if (btn.hasAttribute("disabled")) return;
       if (!category) return;
       openCategory(category);
       window.location.hash = `#${category}`;
