@@ -317,17 +317,31 @@ body {
     text-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
 }
 
-.category-card:hover {
+.category-card[data-state="correct"] {
+    background: rgba(46, 204, 113, 1);
+    box-shadow: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+.category-card[data-state="wrong"] {
+    background: rgba(231, 76, 60, 1);
+    box-shadow: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+.category-card:not([disabled]):hover {
     background: var(--tile-hover);
     transform: translateY(-1px);
 }
 
-.category-card:active {
+.category-card:not([disabled]):active {
     background: var(--tile-active);
     transform: translateY(0);
 }
 
-.category-card:focus-visible {
+.category-card:not([disabled]):focus-visible {
     outline: 3px solid rgba(255, 255, 255, 0.9);
     outline-offset: 3px;
 }

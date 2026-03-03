@@ -32,6 +32,43 @@ const state = {
   category: null,
 };
 
+function getTodayKey() {
+  const today = new Date();
+  return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+}
+
+function loadGameState() {
+  const key = getTodayKey();
+  const saved = localStorage.getItem('wdwtrivia_state');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.date === key) {
+        return parsed.categories || {};
+      }
+    } catch (e) { }
+  }
+  return {};
+}
+
+function saveCategoryState(category, isCorrect) {
+  const key = getTodayKey();
+  const stateObj = loadGameState();
+  stateObj[category] = isCorrect ? 'correct' : 'wrong';
+  localStorage.setItem('wdwtrivia_state', JSON.stringify({
+    date: key,
+    categories: stateObj
+  }));
+}
+
+function updateCategoryCardUI(category, stateString) {
+  const btn = document.querySelector(`.category-card[data-category="${category}"]`);
+  if (btn) {
+    btn.setAttribute("data-state", stateString);
+    btn.setAttribute("disabled", "true");
+  }
+}
+
 function $(sel) {
   return document.querySelector(sel);
 }
@@ -102,12 +139,16 @@ function renderQuestion(q) {
       if (idx === q.answerIndex) {
         btn.dataset.state = "correct";
         if (feedbackEl) feedbackEl.textContent = "Correct!";
+        saveCategoryState(q.category, true);
+        updateCategoryCardUI(q.category, 'correct');
       } else {
         btn.dataset.state = "wrong";
         const correctBtn = answersEl.querySelectorAll("button.answer-btn")[q.answerIndex];
         if (correctBtn instanceof HTMLElement) correctBtn.dataset.state = "correct";
         const correctChoice = q.choices[q.answerIndex];
         if (feedbackEl) feedbackEl.textContent = `Not quite — correct answer: ${correctChoice}`;
+        saveCategoryState(q.category, false);
+        updateCategoryCardUI(q.category, 'wrong');
       }
     });
     answersEl.appendChild(btn);
@@ -125,10 +166,18 @@ function openCategory(category) {
 
 // Wires up all interactions (category selection, modal close, next question, deep link).
 function initUI() {
+  const gameState = loadGameState();
+
   const buttons = document.querySelectorAll("[data-category]");
   for (const btn of buttons) {
+    const category = btn.getAttribute("data-category");
+    if (category && gameState[category]) {
+      btn.setAttribute("data-state", gameState[category]);
+      btn.setAttribute("disabled", "true");
+    }
+
     btn.addEventListener("click", () => {
-      const category = btn.getAttribute("data-category");
+      if (btn.hasAttribute("disabled")) return;
       if (!category) return;
       openCategory(category);
       window.location.hash = `#${category}`;
