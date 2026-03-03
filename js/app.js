@@ -68,7 +68,6 @@ function updateCategoryCardUI(category, stateString) {
   const btn = document.querySelector(`.category-card[data-category="${category}"]`);
   if (btn) {
     btn.setAttribute("data-state", stateString);
-    btn.setAttribute("disabled", "true");
   }
 }
 
@@ -198,7 +197,6 @@ function initUI() {
     const category = btn.getAttribute("data-category");
     if (category && gameState[category]) {
       btn.setAttribute("data-state", gameState[category].stateString);
-      btn.setAttribute("disabled", "true");
     }
 
     btn.addEventListener("click", () => {
