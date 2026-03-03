@@ -15,13 +15,21 @@ const CATEGORY_LABELS = {
 // Data shape expected from data/questions.json.
 /** @typedef {{ id: string, category: string, question: string, choices: string[], answerIndex: number, explanation?: string }} TriviaQuestion */
 
-/** @type {TriviaQuestion[] | null} */
-let QUESTIONS_CACHE = null;
+const QUESTIONS = [
+  { "id": "mk-001", "category": "magic-kingdom", "question": "What is the name of the icon castle in Magic Kingdom?", "choices": ["Cinderella Castle", "Sleeping Beauty Castle", "Beast's Castle", "Aurora Castle"], "answerIndex": 0 },
+  { "id": "epcot-001", "category": "epcot", "question": "In what year did EPCOT open at Walt Disney World?", "choices": ["1971", "1982", "1994", "2001"], "answerIndex": 1 },
+  { "id": "hs-001", "category": "hollywood-studios", "question": "Star Wars: Galaxy's Edge is located in which park?", "choices": ["Disney's Hollywood Studios", "EPCOT", "Animal Kingdom", "Magic Kingdom"], "answerIndex": 0 },
+  { "id": "ak-001", "category": "animal-kingdom", "question": "What is the name of the tree icon located in the center of Disney's Animal Kingdom?", "choices": ["Tree of Life", "Tree of Wonders", "Discovery Tree", "Nature's Crown"], "answerIndex": 0 },
+  { "id": "res-001", "category": "resorts", "question": "Which monorail loop includes Disney's Contemporary Resort?", "choices": ["Resort monorail loop", "EPCOT loop", "Skyliner loop", "Watercraft loop"], "answerIndex": 0 },
+  { "id": "din-001", "category": "dining", "question": "Which park is home to 'Be Our Guest Restaurant'?", "choices": ["Magic Kingdom", "EPCOT", "Animal Kingdom", "Hollywood Studios"], "answerIndex": 0 },
+  { "id": "trans-001", "category": "transportation", "question": "What is the name of the gondola transportation system at Walt Disney World?", "choices": ["Disney Skyliner", "Disney Skyway", "Disney Gondolas", "Aerial Transit"], "answerIndex": 0 },
+  { "id": "show-001", "category": "shows-entertainment", "question": "Fantasmic! is a nighttime spectacular in which park?", "choices": ["Disney's Hollywood Studios", "Magic Kingdom", "EPCOT", "Animal Kingdom"], "answerIndex": 0 },
+  { "id": "hist-001", "category": "history", "question": "What year did Walt Disney World Resort open?", "choices": ["1955", "1971", "1982", "1992"], "answerIndex": 1 }
+];
 
-/** @type {{ category: string | null, lastQuestionIdByCategory: Record<string, string | undefined> }} */
+/** @type {{ category: string | null }} */
 const state = {
   category: null,
-  lastQuestionIdByCategory: {},
 };
 
 function $(sel) {
@@ -45,31 +53,10 @@ function setModalOpen(isOpen) {
   }
 }
 
-// Loads questions once and caches them in-memory.
-async function loadQuestions() {
-  if (QUESTIONS_CACHE) return QUESTIONS_CACHE;
-  // Cache-bust to avoid stale JSON when testing locally / after deploys.
-  const cacheBust = `v=${Date.now()}`;
-  const res = await fetch(`data/questions.json?${cacheBust}`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to load questions.json (${res.status})`);
-  const data = await res.json();
-  if (!Array.isArray(data)) throw new Error("questions.json must be an array");
-  QUESTIONS_CACHE = data;
-  return QUESTIONS_CACHE;
-}
-
-// Pick a question in the category, avoiding repeating the last one (if possible).
+// Pick the matching question for the category.
 function sampleQuestion(questions, category) {
   const inCat = questions.filter((q) => q && q.category === category);
   if (inCat.length === 0) return null;
-
-  const lastId = state.lastQuestionIdByCategory[category];
-  if (inCat.length === 1) return inCat[0];
-
-  for (let tries = 0; tries < 6; tries++) {
-    const q = inCat[Math.floor(Math.random() * inCat.length)];
-    if (q.id !== lastId) return q;
-  }
   return inCat[0];
 }
 
@@ -96,8 +83,6 @@ function renderQuestion(q) {
     if (feedbackEl) feedbackEl.textContent = "";
     return;
   }
-
-  state.lastQuestionIdByCategory[q.category] = q.id;
 
   if (categoryEl) categoryEl.textContent = CATEGORY_LABELS[q.category] ?? q.category;
   questionEl.textContent = q.question;
@@ -129,20 +114,13 @@ function renderQuestion(q) {
   });
 }
 
-async function openCategory(category) {
+function openCategory(category) {
   state.category = category;
   clearAnswersUI();
   setModalOpen(true);
 
-  try {
-    const questions = await loadQuestions();
-    const q = sampleQuestion(questions, category);
-    renderQuestion(q);
-  } catch (err) {
-    renderQuestion(null);
-    const questionEl = $("#question-text");
-    if (questionEl) questionEl.textContent = "Couldn’t load questions. Try refreshing the page.";
-  }
+  const q = sampleQuestion(QUESTIONS, category);
+  renderQuestion(q);
 }
 
 // Wires up all interactions (category selection, modal close, next question, deep link).
@@ -168,23 +146,6 @@ function initUI() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") setModalOpen(false);
   });
-
-  const nextBtn = $("#next-question");
-  if (nextBtn) {
-    // "Next question" keeps the same category and selects another question (if available).
-    nextBtn.addEventListener("click", async () => {
-      const category = state.category;
-      if (!category) return;
-      clearAnswersUI();
-      try {
-        const questions = await loadQuestions();
-        const q = sampleQuestion(questions, category);
-        renderQuestion(q);
-      } catch {
-        renderQuestion(null);
-      }
-    });
-  }
 
   // Deep-link support: load a category if URL has a hash.
   const initialHash = window.location.hash.replace(/^#/, "");
