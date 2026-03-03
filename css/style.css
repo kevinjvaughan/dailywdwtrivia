@@ -136,7 +136,7 @@ body {
     margin: 2px 0 0;
     font-family: var(--font-disney);
     font-weight: 400;
-    font-size: 34px;
+    font-size: 40px;
     line-height: 1.05;
 }
 
@@ -397,7 +397,7 @@ body {
 .game-footer {
     text-align: center;
     font-family: var(--font-disney);
-    font-size: clamp(20px, 3vw, 26px);
+    font-size: clamp(30px, 3vw, 26px);
     line-height: 1.4;
     padding-top: 5px;
     color: var(--text);
@@ -412,7 +412,7 @@ body {
 }
 
 .game-footer .disclaimer-link {
-    font-size: clamp(16px, 1.8vw, 18px);
+    font-size: clamp(19px, 1.8vw, 18px);
     margin-top: 4px;
-    opacity: 0.8;
+    opacity: 1.0;
 }
