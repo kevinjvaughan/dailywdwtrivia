@@ -410,3 +410,9 @@ body {
     margin-top: 2px;
     opacity: 1.0;
 }
+
+.game-footer .disclaimer-link {
+    font-size: clamp(16px, 1.8vw, 18px);
+    margin-top: 4px;
+    opacity: 0.8;
+}
