@@ -11,8 +11,3 @@ https://dailywdwtrivia.com
 • Daily reset system
 • Score tracking with localStorage
 
-## Technologies
-HTML
-CSS
-JavaScript
-GitHub Pages
