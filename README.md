@@ -6,8 +6,8 @@ Live Site:
 https://dailywdwtrivia.com
 
 ## Features
-• 9 daily trivia questions
-• Categories: Magic Kingdom, EPCOT, Hollywood Studios
-• Daily reset system
-• Score tracking with localStorage
+- 9 daily trivia questions
+- Categories: Magic Kingdom, EPCOT, Hollywood Studios
+- Daily reset system
+- Score tracking with localStorage
 
