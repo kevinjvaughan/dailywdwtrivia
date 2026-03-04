@@ -329,7 +329,7 @@ body {
     cursor: pointer;
 }
 
-.category-card:not([disabled]):hover {
+.category-card:not([disabled]):not([data-state]):hover {
     background: var(--tile-hover);
     transform: translateY(-1px);
 }
