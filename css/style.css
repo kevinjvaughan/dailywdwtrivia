@@ -1,23 +1,55 @@
+/**
+ * ============================================================================
+ * WALT DISNEY WORLD DAILY TRIVIA - Main Stylesheet
+ * ============================================================================
+ * This stylesheet defines all visual styling for the trivia application.
+ * Theme colors, animations, responsive layouts, and modal styling are
+ * centralized here for easy customization.
+ *
+ * Structure:
+ * 1. Theme variables and fonts
+ * 2. Main page layout and components
+ * 3. Category card styling
+ * 4. Modal overlay and dialog styling
+ * 5. Answer buttons and feedback
+ * 6. Decorative images (Mickey and Minnie)
+ * 7. Responsive breakpoints
+ */
+
+/**
+ * ============================================================================
+ * CSS CUSTOM PROPERTIES (VARIABLES)
+ * ============================================================================
+ * All themeable colors are defined as CSS variables at the root level.
+ * Change these values to quickly re-skin the entire site.
+ */
 :root {
-    /* Theme colors (tweak these to re-skin the site quickly) */
-    /* Background sky color */
-    --bg: #8ee7ff;
-    --tile: #7a4ff2;
-    --tile-hover: #6b41e7;
-    --tile-active: #5f37dc;
-    --text: #111;
-    --tile-text: #fff;
-    --shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-    --radius: 22px;
+    /* Primary color palette */
+    --bg: #8ee7ff;                                /* Sky blue background */
+    --tile: #7a4ff2;                              /* Default category tile color (purple) */
+    --tile-hover: #6b41e7;                        /* Hover state for tiles */
+    --tile-active: #5f37dc;                       /* Active/clicked state for tiles */
+    --text: #111;                                 /* Main text color (near black) */
+    --tile-text: #fff;                            /* Text on category tiles (white) */
+    --shadow: 0 10px 20px rgba(0, 0, 0, 0.08);   /* Consistent shadow for elevated elements */
+    --radius: 22px;                               /* Border radius for rounded corners */
 
-    /* Primary site font stack (Waltograph first; fall back to cursive) */
+    /* Modal styling */
+    --panel-bg: rgba(255, 255, 255, 0.92);       /* Semi-transparent white background */
+    --panel-border: rgba(0, 0, 0, 0.08);         /* Subtle border color */
+
+    /* Primary site font stack (Waltograph is the Disney-branded font) */
     --font-disney: "Waltograph", "Waltograph42", "Waltograph UI", "Comic Sans MS", cursive;
-
-    /* Modal surface styling */
-    --panel-bg: rgba(255, 255, 255, 0.92);
-    --panel-border: rgba(0, 0, 0, 0.08);
 }
 
+/**
+ * ============================================================================
+ * FONT LOADING
+ * ============================================================================
+ * Waltograph is the signature Disney font family.
+ * Attempts to use locally installed fonts first, then falls back to web fonts.
+ * Includes multiple file formats for broad browser compatibility.
+ */
 /* Waltograph font loading:
    - `local(...)` uses the visitor's installed font (if present)
    - `url(...)` serves the font from this repo for everyone else
@@ -66,6 +98,14 @@
         url("../assets/fonts/waltograph.otf") format("opentype");
 }
 
+/**
+ * ============================================================================
+ * GLOBAL STYLES
+ * ============================================================================
+ * Base styling for all elements, body, and document structure.
+ */
+
+/* Apply border-box sizing model to all elements for predictable layouts */
 *,
 *::before,
 *::after {
@@ -85,31 +125,43 @@ body {
     font-family: var(--font-disney);
 }
 
+/**
+ * ============================================================================
+ * MODAL STYLING
+ * ============================================================================
+ * The modal overlay is the dialog box that displays questions and answer
+ * choices. It's hidden by default and opened via JavaScript when a
+ * category button is clicked.
+ */
+
 /* Modal overlay (opened by JS by toggling [data-open="true"]) */
 .modal {
     position: fixed;
     inset: 0;
-    display: none;
+    display: none;                         /* Hidden by default */
     align-items: center;
     justify-content: center;
     padding: 18px;
-    z-index: 50;
+    z-index: 50;                          /* Above all page content */
 }
 
+/* Show modal when data-open="true" is set by JavaScript */
 .modal[data-open="true"] {
     display: flex;
 }
 
+/* Semi-transparent backdrop behind modal content */
 .modal__backdrop {
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);            /* Frosted glass effect */
 }
 
+/* Main modal panel/dialog box */
 .modal__panel {
     position: relative;
-    width: min(760px, 94vw);
+    width: min(760px, 94vw);               /* Responsive width: 760px max or 94% of viewport */
     border-radius: 18px;
     background: var(--panel-bg);
     border: 1px solid var(--panel-border);
@@ -117,6 +169,7 @@ body {
     overflow: hidden;
 }
 
+/* Header section containing title and close button */
 .modal__header {
     display: flex;
     align-items: flex-start;
@@ -140,6 +193,7 @@ body {
     line-height: 1.05;
 }
 
+/* Close button in top-right corner of modal */
 .icon-btn {
     appearance: none;
     border: 0;
@@ -164,10 +218,12 @@ body {
     outline-offset: 2px;
 }
 
+/* Body section containing question and answer choices */
 .modal__body {
     padding: 14px 18px 18px;
 }
 
+/* Question text styling */
 .question {
     margin: 0 0 14px;
     font-family: var(--font-disney);
@@ -176,12 +232,21 @@ body {
     letter-spacing: 0.2px;
 }
 
+/**
+ * ============================================================================
+ * ANSWER BUTTONS AND FEEDBACK
+ * ============================================================================
+ * Answer buttons are dynamically created by JavaScript and marked with
+ * data-state="correct|wrong" after the user clicks them.
+ */
+
+/* Container for answer choice buttons (displays as grid) */
 .answers {
     display: grid;
     gap: 10px;
 }
 
-/* Answer buttons get marked by JS with data-state="correct|wrong" after selection. */
+/* Individual answer choice buttons */
 .answer-btn {
     appearance: none;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -196,27 +261,32 @@ body {
     transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease;
 }
 
+/* Hover effect: slight upward movement and border highlight */
 .answer-btn:hover {
     transform: translateY(-1px);
     border-color: rgba(0, 0, 0, 0.18);
 }
 
+/* Disabled state: no hover effects, reduced opacity */
 .answer-btn[disabled] {
     cursor: default;
     transform: none;
     opacity: 0.75;
 }
 
+/* Correct answer styling: green background and border */
 .answer-btn[data-state="correct"] {
-    background: rgba(46, 204, 113, 0.18);
+    background: rgba(46, 204, 113, 0.18);  /* Semi-transparent green */
     border-color: rgba(46, 204, 113, 0.55);
 }
 
+/* Wrong answer styling: red background and border */
 .answer-btn[data-state="wrong"] {
-    background: rgba(231, 76, 60, 0.18);
+    background: rgba(231, 76, 60, 0.18);   /* Semi-transparent red */
     border-color: rgba(231, 76, 60, 0.55);
 }
 
+/* Feedback message (success/failure text) */
 .feedback {
     margin: 12px 0 0;
     min-height: 22px;
@@ -258,18 +328,27 @@ body {
     outline-offset: 2px;
 }
 
-/* Main page layout */
+/**
+ * ============================================================================
+ * MAIN PAGE LAYOUT
+ * ============================================================================
+ * The main page layout is a centered grid container with the title at the top
+ * and the 3×3 category grid below.
+ */
+
+/* Main page container with centered layout */
 .page {
-    width: min(880px, 92vw);
-    margin: 0 auto;
-    padding: clamp(28px, 4vw, 56px) 0 clamp(32px, 6vw, 72px);
+    width: min(880px, 92vw);               /* 880px max on desktop, 92% on mobile */
+    margin: 0 auto;                        /* Horizontal centering */
+    padding: clamp(28px, 4vw, 56px) 0 clamp(32px, 6vw, 72px);  /* Vertical padding, scales responsively */
     display: grid;
     justify-items: center;
-    gap: clamp(18px, 3.2vw, 34px);
+    gap: clamp(18px, 3.2vw, 34px);        /* Gap between title and category grid */
     position: relative;
-    z-index: 1;
+    z-index: 1;                           /* Above decorative images */
 }
 
+/* Main page title */
 .title {
     margin: 0;
     text-align: center;
@@ -277,31 +356,40 @@ body {
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: 0.5px;
-    font-size: clamp(40px, 5vw, 64px);
+    font-size: clamp(40px, 5vw, 64px);   /* Scales responsively from 40px to 64px */
 }
 
+/**
+ * ============================================================================
+ * CATEGORY GRID AND CARDS
+ * ============================================================================
+ * The 3×3 grid of clickable category buttons. Uses CSS Grid for
+ * responsive layout that adapts to smaller screens.
+ */
+
+/* 3x3 grid container for category cards */
 .category-grid {
     width: fit-content;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: clamp(18px, 3vw, 30px);
+    grid-template-columns: repeat(3, auto);  /* Three equal columns */
+    gap: clamp(18px, 3vw, 30px);             /* Responsive gap between cards */
     justify-content: center;
     justify-items: center;
 }
 
-/* Category tiles (the 3×3 purple buttons) */
+/* Individual category card / button */
 .category-card {
-    appearance: none;
+    appearance: none;                     /* Remove default button styling */
     border: 0;
-    background: var(--tile);
-    color: var(--tile-text);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    background: var(--tile);              /* Purple by default */
+    color: var(--tile-text);              /* White text */
+    border-radius: var(--radius);         /* Rounded corners */
+    box-shadow: var(--shadow);            /* Subtle drop shadow */
     width: 210px;
-    height: clamp(92px, 11vw, 128px);
+    height: clamp(92px, 11vw, 128px);    /* Responsive height based on viewport */
     padding: 18px 16px;
-    display: grid;
+    display: grid;                        /* Center content both ways */
     place-items: center;
     text-align: center;
     cursor: pointer;
@@ -309,41 +397,48 @@ body {
     transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
 }
 
+/* Label text inside category card */
 .category-card__label {
     font-family: var(--font-disney);
     font-weight: 400;
     line-height: 1.1;
-    font-size: clamp(20px, 2.25vw, 30px);
+    font-size: clamp(20px, 2.25vw, 30px);  /* Scales responsively */
     text-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
 }
 
+/* Card styling when user answers correctly (answer is marked correct) */
 .category-card[data-state="correct"] {
-    background: rgba(46, 204, 113, 1);
+    background: rgba(46, 204, 113, 1);   /* Green */
     box-shadow: none;
     cursor: pointer;
 }
 
+/* Card styling when user answers incorrectly (answer is marked wrong) */
 .category-card[data-state="wrong"] {
-    background: rgba(231, 76, 60, 1);
+    background: rgba(231, 76, 60, 1);    /* Red */
     box-shadow: none;
     cursor: pointer;
 }
 
+/* Hover effect for unanswered cards (not [data-state] = no answer yet) */
 .category-card:not([disabled]):not([data-state]):hover {
-    background: var(--tile-hover);
-    transform: translateY(-1px);
+    background: var(--tile-hover);       /* Darker purple */
+    transform: translateY(-1px);         /* Slight upward movement */
 }
 
+/* Active/click state */
 .category-card:not([disabled]):active {
-    background: var(--tile-active);
-    transform: translateY(0);
+    background: var(--tile-active);      /* Even darker purple */
+    transform: translateY(0);            /* Return to normal position */
 }
 
+/* Focus state for keyboard navigation */
 .category-card:not([disabled]):focus-visible {
     outline: 3px solid rgba(255, 255, 255, 0.9);
     outline-offset: 3px;
 }
 
+/* Respect user's motion preference (accessibility) */
 @media (prefers-reduced-motion: reduce) {
     .category-card {
         transition: none;
@@ -357,25 +452,34 @@ body {
     position: fixed;
     top: 49%;
     transform: translateY(-50%);
-    max-height: clamp(450px, 42vh, 800px);
-    width: auto;
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
+    max-height: clamp(450px, 42vh, 800px);  /* Responsive height: 450px to 800px */
+    width: auto;                             /* Maintain aspect ratio */
+    pointer-events: none;                    /* Don't interfere with clicks */
+    user-select: none;                       /* Can't select as text */
+    z-index: 0;                             /* Behind all page content */
 }
 
+/* Mickey on the right side */
 .mickey-figure {
-    right: max(30px, 2vw);
+    right: max(30px, 2vw);                  /* 30px minimum, or 2% of viewport width */
 }
 
-/* EDITED: Position Minnie Mouse on the left side */
+/* Minnie on the left side */
 .minnie-figure {
     left: max(60px, 2vw);
 }
 
+/**
+ * ============================================================================
+ * RESPONSIVE BREAKPOINTS (MEDIA QUERIES)
+ * ============================================================================
+ * Layout and sizing adjustments for smaller screens and mobile devices.
+ */
+
+/* Tablet and smaller desktop screens (720px and below) */
 @media (max-width: 720px) {
 
-    /* EDITED: Added .minnie-figure to share mobile dimensions */
+    /* Reduce decorative image sizes on smaller screens for better content focus */
     .mickey-figure,
     .minnie-figure {
         max-height: clamp(180px, 32vh, 280px);
@@ -386,26 +490,33 @@ body {
         right: max(24px, 8vw);
     }
 
-    /* EDITED: Position Minnie Mouse on the left side for mobile */
     .minnie-figure {
         left: max(24px, 8vw);
     }
 }
 
-/* Mobile layout: reduce columns as the screen narrows */
+/* Mobile layout: reduce from 3 columns to 2 columns */
 @media (max-width: 720px) {
     .category-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
+/* Small screens: single column for category grid */
 @media (max-width: 440px) {
     .category-grid {
         grid-template-columns: 1fr;
     }
 }
 
-/* Footer for Date, Game Number, and Timer */
+/**
+ * ============================================================================
+ * FOOTER STYLING
+ * ============================================================================
+ * Date, game number, and elapsed timer display at the bottom of the page.
+ */
+
+/* Footer container and main stats section */
 .game-footer {
     text-align: center;
     font-family: var(--font-disney);
@@ -417,12 +528,14 @@ body {
     opacity: 1.0;
 }
 
+/* Social media link in footer */
 .game-footer .social-link {
     font-size: clamp(30px, 2.5vw, 22px);
     margin-top: 2px;
     opacity: 1.0;
 }
 
+/* Disclaimer text in footer */
 .game-footer .disclaimer-link {
     font-size: clamp(19px, 1.8vw, 18px);
     margin-top: 4px;

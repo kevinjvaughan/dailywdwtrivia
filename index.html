@@ -10,21 +10,42 @@
 
 <body>
     <!--
-      Single-page layout:
-      - Top: title
-      - Middle: category grid (primary navigation)
-      - Overlay: question modal (rendered/controlled by js/app.js)
+      ============================================================================
+      WALT DISNEY WORLD DAILY TRIVIA - HTML STRUCTURE
+      ============================================================================
+      
+      Single-page application layout:
+      1. Decorative images (Mickey and Minnie) positioned behind main content
+      2. Main content area with:
+         - Title
+         - 3×3 grid of category buttons (primary navigation)
+         - Footer with date, game number, and timer
+      3. Question modal (initially hidden, shown/hidden by JavaScript)
+      
+      The JavaScript (js/app.js) handles all interactivity and dynamically
+      populates the modal with questions and answer choices based on user
+      selections and fetched data from data/questions.json.
     -->
+
     <!-- Decorative Mickey image on the right side of the screen -->
     <img class="mickey-figure" src="assets/img/mickey.webp" alt="Mickey Mouse" aria-hidden="true">
 
-    <!-- EDITED: Added Minnie Mouse image on the left side of the screen -->
+    <!-- Decorative Minnie Mouse image on the left side of the screen -->
     <img class="minnie-figure" src="assets/img/minniemouse.png" alt="Minnie Mouse" aria-hidden="true">
 
+    <!-- Main page content -->
     <main class="page" role="main">
+        <!-- Page title -->
         <h1 class="title">Daily Walt Disney World Trivia</h1>
 
-        <!-- Category buttons map 1:1 to `category` values in data/questions.json -->
+        <!-- 
+          Category button grid: 3x3 grid of clickable buttons.
+          Each button has a data-category attribute that matches:
+          - Category values in data/questions.json
+          - Category keys in the CATEGORY_LABELS object (js/app.js)
+          
+          When clicked, JavaScript opens a modal with a question from that category.
+        -->
         <section class="category-grid" aria-label="Trivia categories">
             <button class="category-card" type="button" data-category="magic-kingdom">
                 <span class="category-card__label">Magic Kingdom</span>
@@ -63,7 +84,16 @@
             </button>
         </section>
 
-        <!-- Footer for Date, Game Number, and Timer -->
+        <!-- 
+          Footer section containing:
+          - Today's date (formatted with ordinal suffix: e.g., "Monday, March 3rd")
+          - Game number identifier
+          - Elapsed time counter (MM:SS format, updated every second)
+          - Social media link
+          - Legal disclaimer
+          
+          All footer content is populated dynamically by JavaScript (initFooterStats function).
+        -->
         <footer class="game-footer">
             <div class="game-stats">
                 <span id="game-date"></span> &nbsp;|&nbsp;
@@ -75,26 +105,52 @@
         </footer>
     </main>
 
-    <!-- Question modal: hidden by default; opened by JS when a category is selected -->
+    <!-- 
+      Question Modal Overlay
+      ============================================================================
+      This modal is hidden by default (aria-hidden="true").
+      JavaScript shows/hides it by setting data-open="true" or removing it.
+      
+      Structure:
+      - .modal: the overlay container (fixed position, full screen)
+      - .modal__backdrop: semi-transparent dark background with blur effect
+      - .modal__panel: the actual dialog box containing the question
+      - .modal__header: title and close button
+      - .modal__body: question text, answer choices, and feedback
+      
+      All question and answer content is dynamically rendered by JavaScript
+      (renderQuestion function in js/app.js).
+    -->
     <div class="modal" id="question-modal" aria-hidden="true">
+        <!-- Semi-transparent backdrop (clicking it closes the modal) -->
         <div class="modal__backdrop" data-close-modal tabindex="-1"></div>
+        
+        <!-- Main modal dialog -->
         <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="question-title">
+            <!-- Modal header with title and close button -->
             <div class="modal__header">
                 <div class="modal__titles">
                     <h2 class="modal__title" id="question-title">Question: </h2>
                 </div>
+                <!-- Close button (×) in the top-right -->
                 <button class="icon-btn" type="button" data-close-modal aria-label="Close">×</button>
             </div>
 
+            <!-- Modal body containing question, answer choices, and feedback -->
             <div class="modal__body">
+                <!-- Question text (dynamically populated by JavaScript) -->
                 <p class="question" id="question-text"></p>
+                
+                <!-- Answer choice buttons (dynamically populated by JavaScript) -->
                 <div class="answers" id="answers"></div>
+                
+                <!-- Feedback message (e.g., "Correct!" or "Not quite — correct answer:") -->
                 <p class="feedback" id="feedback" aria-live="polite"></p>
             </div>
         </div>
     </div>
 
-    <!-- JS is loaded last so the DOM is available immediately -->
+    <!-- JavaScript is loaded last so the DOM is fully ready before script execution -->
     <script src="js/app.js"></script>
 </body>
 
