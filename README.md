@@ -1,34 +1,18 @@
-# Daily WDW Trivia
-Daily Walt Disney World Trivia game with 9 different categories, one question per category, questions change every 24 hours.
+# Daily Walt Disney World Trivia
 
-## Project structure
+A daily trivia game featuring questions about Walt Disney World parks, attractions, and history.
 
-- `index.html`: single page UI (category grid + question modal)
-- `css/style.css`: styling + Waltograph font loading
-- `js/app.js`: loads questions and drives the modal UI
-- `data/questions.json`: trivia question data (JSON)
-- `assets/fonts/`: web fonts (e.g. `waltograph42.otf`)
+Live Site:
+https://dailywdwtrivia.com
 
-## `data/questions.json` format
+## Features
+• 9 daily trivia questions
+• Categories: Magic Kingdom, EPCOT, Hollywood Studios
+• Daily reset system
+• Score tracking with localStorage
 
-The file is an array of question objects:
-
-- `id` (string): unique identifier (e.g. `"mk-001"`)
-- `category` (string): must match a `data-category` in `index.html`
-- `question` (string): the prompt text
-- `choices` (string[]): multiple choice answers shown as buttons
-- `answerIndex` (number): 0-based index into `choices`
-
-Example:
-
-```json
-[
-  {
-    "id": "epcot-001",
-    "category": "epcot",
-    "question": "In what year did EPCOT open at Walt Disney World?",
-    "choices": ["1971", "1982", "1994", "2001"],
-    "answerIndex": 1
-  }
-]
-```
+## Technologies
+HTML
+CSS
+JavaScript
+GitHub Pages
