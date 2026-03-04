@@ -15,7 +15,8 @@ const CATEGORY_LABELS = {
 // Data shape expected from data/questions.json.
 /** @typedef {{ id: string, category: string, question: string, choices: string[], answerIndex: number, explanation?: string }} TriviaQuestion */
 
-const QUESTIONS = [
+// Local fallback questions used only if data/questions.json fails to load.
+let QUESTIONS = [
   { "id": "mk-001", "category": "magic-kingdom", "question": "What is the name of the icon castle in Magic Kingdom?", "choices": ["Cinderella Castle", "Sleeping Beauty Castle", "Beast's Castle", "Aurora Castle"], "answerIndex": 0 },
   { "id": "epcot-001", "category": "epcot", "question": "In what year did EPCOT open at Walt Disney World?", "choices": ["1971", "1982", "1994", "2001"], "answerIndex": 1 },
   { "id": "hs-001", "category": "hollywood-studios", "question": "Star Wars: Galaxy's Edge is located in which park?", "choices": ["Disney's Hollywood Studios", "EPCOT", "Animal Kingdom", "Magic Kingdom"], "answerIndex": 0 },
@@ -27,14 +28,34 @@ const QUESTIONS = [
   { "id": "hist-001", "category": "history", "question": "What year did Walt Disney World Resort open?", "choices": ["1955", "1971", "1982", "1992"], "answerIndex": 1 }
 ];
 
+// Remember the tile that opened the modal so we can restore focus when it closes.
+let lastFocusedTile = null;
+
 /** @type {{ category: string | null }} */
 const state = {
   category: null,
 };
 
+// Used to trap focus while the modal is open.
+let focusTrapHandler = null;
+
 function getTodayKey() {
   const today = new Date();
   return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+}
+
+async function fetchQuestions() {
+  try {
+    const res = await fetch("data/questions.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (Array.isArray(data) && data.length) {
+      QUESTIONS = data;
+    }
+  } catch (err) {
+    // Fall back to the baked-in QUESTIONS array so the game still works offline.
+    console.warn("Falling back to bundled questions:", err);
+  }
 }
 
 function loadGameState() {
@@ -85,10 +106,35 @@ function setModalOpen(isOpen) {
     document.body.style.overflow = "hidden";
     const closeBtn = modal.querySelector("[data-close-modal]");
     if (closeBtn instanceof HTMLElement) closeBtn.focus();
+
+    // Simple focus trap inside the modal for keyboard users.
+    const focusables = modal.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    focusTrapHandler = (evt) => {
+      if (evt.key !== "Tab" || focusables.length === 0) return;
+      if (evt.shiftKey && document.activeElement === first) {
+        evt.preventDefault();
+        last.focus();
+      } else if (!evt.shiftKey && document.activeElement === last) {
+        evt.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", focusTrapHandler);
   } else {
     modal.removeAttribute("data-open");
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    if (focusTrapHandler) {
+      document.removeEventListener("keydown", focusTrapHandler);
+      focusTrapHandler = null;
+    }
+    if (lastFocusedTile instanceof HTMLElement) {
+      lastFocusedTile.focus();
+    }
   }
 }
 
@@ -96,7 +142,14 @@ function setModalOpen(isOpen) {
 function sampleQuestion(questions, category) {
   const inCat = questions.filter((q) => q && q.category === category);
   if (inCat.length === 0) return null;
-  return inCat[0];
+  // Deterministic per-day selection so questions rotate every calendar day.
+  const key = `${getTodayKey()}-${category}`;
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  }
+  const idx = hash % inCat.length;
+  return inCat[idx];
 }
 
 function clearAnswersUI() {
@@ -186,7 +239,10 @@ function openCategory(category) {
 }
 
 // Wires up all interactions (category selection, modal close, next question, deep link).
-function initUI() {
+async function initUI() {
+  // Load fresh questions first so deep links and UI use live data.
+  await fetchQuestions();
+
   const gameState = loadGameState();
 
   const buttons = document.querySelectorAll("[data-category]");
@@ -198,6 +254,7 @@ function initUI() {
 
     btn.addEventListener("click", () => {
       if (!category) return;
+      lastFocusedTile = btn;
       openCategory(category);
       window.location.hash = `#${category}`;
     });
@@ -261,4 +318,3 @@ if (document.readyState === "loading") {
 } else {
   initUI();
 }
-
