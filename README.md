@@ -7,7 +7,7 @@ https://dailywdwtrivia.com
 
 ## Features
 - 9 daily trivia questions
-- Categories: Magic Kingdom, EPCOT, Hollywood Studios
+- Categories: Magic Kingdom, EPCOT, Hollywood Studios, Animal Kingdom, Resorts, Dining, Transportation, Shows & Entertainment, History
 - Daily reset system
 - Score tracking with localStorage
 
