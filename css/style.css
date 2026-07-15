@@ -143,6 +143,7 @@ body {
     justify-content: center;
     padding: 18px;
     z-index: 50;                          /* Above all page content */
+    overflow-y: auto;
 }
 
 /* Show modal when data-open="true" is set by JavaScript */
@@ -162,6 +163,9 @@ body {
 .modal__panel {
     position: relative;
     width: min(760px, 94vw);               /* Responsive width: 760px max or 94% of viewport */
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
     border-radius: 18px;
     background: var(--panel-bg);
     border: 1px solid var(--panel-border);
@@ -221,6 +225,8 @@ body {
 /* Body section containing question and answer choices */
 .modal__body {
     padding: 14px 18px 18px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Question text styling */
@@ -478,27 +484,32 @@ body {
 
 /* Tablet and smaller desktop screens (720px and below) */
 @media (max-width: 720px) {
-
-    /* Reduce decorative image sizes on smaller screens for better content focus */
+    /* Hide decorative images on smaller screens to prevent content overlap and poor text contrast */
     .mickey-figure,
     .minnie-figure {
-        max-height: clamp(180px, 32vh, 280px);
-        opacity: 0.85;
-    }
-
-    .mickey-figure {
-        right: max(24px, 8vw);
-    }
-
-    .minnie-figure {
-        left: max(24px, 8vw);
+        display: none;
     }
 }
 
-/* Mobile layout: reduce from 3 columns to 2 columns */
+/* Mobile layout: reduce from 3 columns to 2 columns and scale tiles */
 @media (max-width: 720px) {
     .category-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(12px, 2vw, 16px);
+        width: 100%;
+        max-width: 480px;
+    }
+
+    .category-card {
+        width: 100%;
+        max-width: 220px;
+        height: auto;
+        min-height: 90px;
+        padding: 14px 10px;
+    }
+
+    .category-card__label {
+        font-size: clamp(16px, 4.5vw, 20px);
     }
 }
 
@@ -506,6 +517,70 @@ body {
 @media (max-width: 440px) {
     .category-grid {
         grid-template-columns: 1fr;
+        max-width: 280px;
+    }
+
+    .category-card {
+        max-width: 280px;
+        min-height: 85px;
+    }
+}
+
+/* Modal responsive styling for phones */
+@media (max-width: 480px) {
+    .modal {
+        padding: 12px;
+    }
+
+    .modal__panel {
+        max-height: 94vh;
+        border-radius: 14px;
+    }
+
+    .modal__header {
+        padding: 14px 14px 0;
+    }
+
+    .modal__title {
+        font-size: 28px;
+    }
+
+    .modal__kicker {
+        font-size: 16px;
+    }
+
+    .modal__body {
+        padding: 10px 14px 14px;
+    }
+
+    .question {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .answers {
+        gap: 8px;
+    }
+
+    .answer-btn {
+        font-size: 18px;
+        padding: 10px 10px;
+        border-radius: 10px;
+    }
+
+    .feedback {
+        font-size: 18px;
+        margin-top: 8px;
+    }
+
+    .modal__footer {
+        padding: 0 14px 14px;
+    }
+
+    .secondary-btn {
+        font-size: 18px;
+        padding: 8px 12px;
+        border-radius: 10px;
     }
 }
 
@@ -520,7 +595,7 @@ body {
 .game-footer {
     text-align: center;
     font-family: var(--font-disney);
-    font-size: clamp(30px, 3vw, 26px);
+    font-size: clamp(18px, 4vw, 24px);
     line-height: 1.4;
     padding-top: 5px;
     color: var(--text);
@@ -530,14 +605,14 @@ body {
 
 /* Social media link in footer */
 .game-footer .social-link {
-    font-size: clamp(30px, 2.5vw, 22px);
+    font-size: clamp(16px, 3.5vw, 20px);
     margin-top: 2px;
     opacity: 1.0;
 }
 
 /* Disclaimer text in footer */
 .game-footer .disclaimer-link {
-    font-size: clamp(19px, 1.8vw, 18px);
+    font-size: clamp(12px, 3vw, 15px);
     margin-top: 4px;
     opacity: 1.0;
 }
