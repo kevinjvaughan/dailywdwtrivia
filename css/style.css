@@ -123,6 +123,8 @@ body {
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-disney);
+    position: relative;
+    overflow-x: hidden;
 }
 
 /**
@@ -375,11 +377,12 @@ body {
 
 /* 3x3 grid container for category cards */
 .category-grid {
-    width: fit-content;
+    width: 100%;
+    max-width: 680px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(3, auto);  /* Three equal columns */
-    gap: clamp(18px, 3vw, 30px);             /* Responsive gap between cards */
+    grid-template-columns: repeat(3, 1fr);  /* Three equal fluid columns */
+    gap: clamp(8px, 2.5vw, 24px);            /* Responsive gap between cards */
     justify-content: center;
     justify-items: center;
 }
@@ -390,11 +393,14 @@ body {
     border: 0;
     background: var(--tile);              /* Purple by default */
     color: var(--tile-text);              /* White text */
-    border-radius: var(--radius);         /* Rounded corners */
+    border-radius: clamp(10px, 2vw, var(--radius)); /* Dynamic border-radius */
     box-shadow: var(--shadow);            /* Subtle drop shadow */
-    width: 210px;
-    height: clamp(92px, 11vw, 128px);    /* Responsive height based on viewport */
-    padding: 18px 16px;
+    width: 100%;
+    max-width: 210px;                     /* Limit max width on large screens */
+    height: auto;
+    aspect-ratio: 1.6 / 1;                 /* Maintain proportion */
+    min-height: clamp(70px, 10vw, 128px);  /* Responsive min-height */
+    padding: clamp(6px, 1.5vw, 18px) clamp(4px, 1vw, 16px);
     display: grid;                        /* Center content both ways */
     place-items: center;
     text-align: center;
@@ -407,9 +413,11 @@ body {
 .category-card__label {
     font-family: var(--font-disney);
     font-weight: 400;
-    line-height: 1.1;
-    font-size: clamp(20px, 2.25vw, 30px);  /* Scales responsively */
+    line-height: 1.15;
+    font-size: clamp(12px, 3.2vw, 26px);  /* Scales responsively */
     text-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Card styling when user answers correctly (answer is marked correct) */
@@ -451,28 +459,26 @@ body {
     }
 }
 
-/* Decorative Mickey image on the right side of the screen */
-/* EDITED: Added .minnie-figure to share dimensions and base styling */
+/* Decorative Mickey and Minnie images placed above the header */
 .mickey-figure,
 .minnie-figure {
-    position: fixed;
-    top: 49%;
-    transform: translateY(-50%);
-    max-height: clamp(450px, 42vh, 800px);  /* Responsive height: 450px to 800px */
+    position: absolute;
+    top: clamp(10px, 2.5vw, 35px);           /* Near the top of the page */
+    max-height: clamp(80px, 15vw, 220px);    /* Smaller sizes that scale cleanly */
     width: auto;                             /* Maintain aspect ratio */
     pointer-events: none;                    /* Don't interfere with clicks */
     user-select: none;                       /* Can't select as text */
-    z-index: 0;                             /* Behind all page content */
+    z-index: 0;                              /* Behind header text if they overlap */
 }
 
-/* Mickey on the right side */
+/* Mickey on the left side (not too far left) */
 .mickey-figure {
-    right: max(30px, 2vw);                  /* 30px minimum, or 2% of viewport width */
+    left: clamp(10px, 5vw, 100px);
 }
 
-/* Minnie on the left side */
+/* Minnie on the right side */
 .minnie-figure {
-    left: max(60px, 2vw);
+    right: clamp(10px, 5vw, 100px);
 }
 
 /**
@@ -482,47 +488,10 @@ body {
  * Layout and sizing adjustments for smaller screens and mobile devices.
  */
 
-/* Tablet and smaller desktop screens (720px and below) */
+/* Mobile adjustments (720px and below) */
 @media (max-width: 720px) {
-    /* Hide decorative images on smaller screens to prevent content overlap and poor text contrast */
-    .mickey-figure,
-    .minnie-figure {
-        display: none;
-    }
-}
-
-/* Mobile layout: reduce from 3 columns to 2 columns and scale tiles */
-@media (max-width: 720px) {
-    .category-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: clamp(12px, 2vw, 16px);
-        width: 100%;
-        max-width: 480px;
-    }
-
-    .category-card {
-        width: 100%;
-        max-width: 220px;
-        height: auto;
-        min-height: 90px;
-        padding: 14px 10px;
-    }
-
-    .category-card__label {
-        font-size: clamp(16px, 4.5vw, 20px);
-    }
-}
-
-/* Small screens: single column for category grid */
-@media (max-width: 440px) {
-    .category-grid {
-        grid-template-columns: 1fr;
-        max-width: 280px;
-    }
-
-    .category-card {
-        max-width: 280px;
-        min-height: 85px;
+    .page {
+        padding-top: clamp(110px, 24vw, 160px); /* Leave room for Mickey & Minnie at the top of the screen */
     }
 }
 
@@ -595,7 +564,7 @@ body {
 .game-footer {
     text-align: center;
     font-family: var(--font-disney);
-    font-size: clamp(18px, 4vw, 24px);
+    font-size: clamp(24px, 5vw, 32px);       /* Enlarged footer text */
     line-height: 1.4;
     padding-top: 5px;
     color: var(--text);
@@ -605,14 +574,14 @@ body {
 
 /* Social media link in footer */
 .game-footer .social-link {
-    font-size: clamp(16px, 3.5vw, 20px);
+    font-size: clamp(20px, 4.5vw, 26px);     /* Enlarged social media link */
     margin-top: 2px;
     opacity: 1.0;
 }
 
 /* Disclaimer text in footer */
 .game-footer .disclaimer-link {
-    font-size: clamp(12px, 3vw, 15px);
+    font-size: clamp(14px, 3.5vw, 20px);     /* Enlarged disclaimer link */
     margin-top: 4px;
     opacity: 1.0;
 }
