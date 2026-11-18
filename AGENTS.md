@@ -45,6 +45,8 @@ Add objects to `data/questions.json` following the existing schema:
 { "id": "<prefix>-NNN", "category": "<category-slug>", "question": "...", "choices": ["A","B","C","D"], "answerIndex": 0 }
 ```
 
+For a one-day question override, add an optional `date` using the local date key format (`YYYY-M-D`). Questions with a matching date take precedence for that category on that day and are excluded from the normal question rotation.
+
 The `category` value must match one of the keys in `CATEGORY_LABELS` (in `js/app.js`) and the `data-category` attributes in `index.html`. The nine current categories are: `magic-kingdom`, `epcot`, `hollywood-studios`, `animal-kingdom`, `resorts`, `dining`, `transportation`, `shows-entertainment`, `history`.
 
 ### Adding a new category

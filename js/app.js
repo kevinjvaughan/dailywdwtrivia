@@ -32,7 +32,7 @@ const CATEGORY_LABELS = {
  * Each question has a unique ID, category, question text, four choices,
  * the correct answer index, and optional explanation.
  */
-/** @typedef {{ id: string, category: string, question: string, choices: string[], answerIndex: number, explanation?: string }} TriviaQuestion */
+/** @typedef {{ id: string, category: string, question: string, choices: string[], answerIndex: number, explanation?: string, date?: string }} TriviaQuestion */
 
 /**
  * Fallback questions array embedded in the page.
@@ -76,6 +76,18 @@ let QUESTIONS = [
   { "id": "hist-003", "category": "history", "question": "Which Disney family member dedicated Walt Disney World at the 1971 opening ceremony?", "choices": ["Roy O. Disney", "Roy E. Disney", "Lillian Disney", "Card Walker"], "answerIndex": 0 },
   { "id": "hist-004", "category": "history", "question": "What land-development codename was used for the Walt Disney World project before its public announcement?", "choices": ["The Florida Project", "Project X", "Project Tomorrow", "Project Florida"], "answerIndex": 0 }
 ];
+
+QUESTIONS.push(
+  { "id": "mk-005", "category": "magic-kingdom", "question": "Which attraction replaced Mr. Toad's Wild Ride in Fantasyland at Magic Kingdom?", "choices": ["The Many Adventures of Winnie the Pooh", "Peter Pan's Flight", "The Barnstormer", "Under the Sea - Journey of the Little Mermaid"], "answerIndex": 0, "date": "2026-11-18" },
+  { "id": "epcot-005", "category": "epcot", "question": "What geometric structure is Spaceship Earth at the entrance to EPCOT?", "choices": ["A geodesic sphere", "A pyramid", "A suspension bridge", "A spiral tower"], "answerIndex": 0, "date": "2026-11-18" },
+  { "id": "hs-005", "category": "hollywood-studios", "question": "Which attraction takes guests into a haunted Hollywood hotel inspired by a classic television anthology series?", "choices": ["The Twilight Zone Tower of Terror", "Rock 'n' Roller Coaster", "Muppet*Vision 3D", "Star Tours"], "answerIndex": 0, "date": "2026-11-18" },
+  { "id": "ak-005", "category": "animal-kingdom", "question": "What is the name of the wildlife reserve guests visit on Kilimanjaro Safaris?", "choices": ["Harambe Wildlife Reserve", "Maharajah Jungle Reserve", "Pangani Forest Preserve", "Discovery Island Sanctuary"], "answerIndex": 0, "date": "2026-11-18" },
+  { "id": "res-005", "category": "resorts", "question": "Which Walt Disney World resort is themed around the South Pacific and sits along Seven Seas Lagoon?", "choices": ["Disney's Polynesian Village Resort", "Disney's Grand Floridian Resort", "Disney's Contemporary Resort", "Disney's Wilderness Lodge"], "answerIndex": 0, "date": "2026-11-18" },
+  { "id": "din-005", "category": "dining", "question": "Which restaurant is located at the top of Disney's Contemporary Resort?", "choices": ["California Grill", "Chef Mickey's", "Steakhouse 71", "The Wave"], "answerIndex": 0, "date": "2026-11-18" },
+  { "id": "trans-005", "category": "transportation", "question": "Which two theme parks are directly connected by the Disney Skyliner?", "choices": ["EPCOT and Disney's Hollywood Studios", "Magic Kingdom and EPCOT", "Animal Kingdom and Magic Kingdom", "EPCOT and Animal Kingdom"], "answerIndex": 0, "date": "2026-11-18" },
+  { "id": "show-005", "category": "shows-entertainment", "question": "Which live stage show at Disney's Animal Kingdom features music and scenes from The Lion King?", "choices": ["Festival of the Lion King", "Finding Nemo: The Big Blue... and Beyond!", "Feathered Friends in Flight!", "A Celebration of Festival of the Lion King"], "answerIndex": 0, "date": "2026-11-18" },
+  { "id": "hist-005", "category": "history", "question": "In what year did EPCOT open to guests?", "choices": ["1982", "1971", "1989", "1998"], "answerIndex": 0, "date": "2026-11-18" }
+);
 
 // ============================================================================
 // STATE MANAGEMENT
@@ -154,13 +166,15 @@ function loadGameState() {
  * Saves a player's answer for a specific category to localStorage.
  * Includes whether they got it right/wrong and which answer they selected.
  * @param {string} category - The category identifier
+ * @param {string} questionId - The ID of the question that was answered
  * @param {boolean} isCorrect - Whether the selected answer was correct
  * @param {number} answerIndex - The index of the choice they selected
  */
-function saveCategoryState(category, isCorrect, answerIndex) {
+function saveCategoryState(category, questionId, isCorrect, answerIndex) {
   const key = getTodayKey();
   const stateObj = loadGameState();
   stateObj[category] = {
+    questionId,
     stateString: isCorrect ? 'correct' : 'wrong',
     selectedIndex: answerIndex
   };
@@ -260,11 +274,15 @@ function setModalOpen(isOpen) {
  * @returns {TriviaQuestion|null} The selected question or null if category not found
  */
 function sampleQuestion(questions, category) {
-  const inCat = questions.filter((q) => q && q.category === category);
+  const todayKey = getTodayKey();
+  const todayQuestions = questions.filter((q) => q && q.category === category && q.date === todayKey);
+  const inCat = todayQuestions.length
+    ? todayQuestions
+    : questions.filter((q) => q && q.category === category && !q.date);
   if (inCat.length === 0) return null;
   // Deterministic per-day selection so questions rotate every calendar day.
   // Hash the date + category to pick the same question for everyone today.
-  const key = `${getTodayKey()}-${category}`;
+  const key = `${todayKey}-${category}`;
   let hash = 0;
   for (let i = 0; i < key.length; i++) {
     hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
@@ -311,7 +329,7 @@ function renderQuestion(q) {
 
   // Check if the player has already answered this category today
   const savedState = loadGameState()[q.category];
-  const hasAnswered = !!savedState;
+  const hasAnswered = !!savedState && savedState.questionId === q.id;
 
   // Create a button for each answer choice
   q.choices.forEach((choice, idx) => {
@@ -347,7 +365,7 @@ function renderQuestion(q) {
       if (idx === q.answerIndex) {
         btn.dataset.state = "correct";
         if (feedbackEl) feedbackEl.textContent = "Correct!";
-        saveCategoryState(q.category, true, idx);
+        saveCategoryState(q.category, q.id, true, idx);
         updateCategoryCardUI(q.category, 'correct');
       } else {
         btn.dataset.state = "wrong";
@@ -355,7 +373,7 @@ function renderQuestion(q) {
         if (correctBtn instanceof HTMLElement) correctBtn.dataset.state = "correct";
         const correctChoice = q.choices[q.answerIndex];
         if (feedbackEl) feedbackEl.textContent = `Not quite — correct answer: ${correctChoice}`;
-        saveCategoryState(q.category, false, idx);
+        saveCategoryState(q.category, q.id, false, idx);
         updateCategoryCardUI(q.category, 'wrong');
       }
     });
@@ -396,7 +414,8 @@ async function initUI() {
     const category = btn.getAttribute("data-category");
     
     // If this category was answered today, show the result with color coding
-    if (category && gameState[category]) {
+    const question = category ? sampleQuestion(QUESTIONS, category) : null;
+    if (question && gameState[category] && gameState[category].questionId === question.id) {
       btn.setAttribute("data-state", gameState[category].stateString);
     }
 

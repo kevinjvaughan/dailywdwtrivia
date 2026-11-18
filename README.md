@@ -10,4 +10,3 @@ https://dailywdwtrivia.com
 - Categories: Magic Kingdom, EPCOT, Hollywood Studios, Animal Kingdom, Resorts, Dining, Transportation, Shows & Entertainment, History
 - Daily reset system
 - Score tracking with localStorage
-

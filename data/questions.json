@@ -250,5 +250,77 @@
     "question": "What land-development codename was used for the Walt Disney World project before its public announcement?",
     "choices": ["The Florida Project", "Project X", "Project Tomorrow", "Project Florida"],
     "answerIndex": 0
+  },
+  {
+    "id": "mk-005",
+    "category": "magic-kingdom",
+    "question": "Which attraction replaced Mr. Toad's Wild Ride in Fantasyland at Magic Kingdom?",
+    "choices": ["The Many Adventures of Winnie the Pooh", "Peter Pan's Flight", "The Barnstormer", "Under the Sea - Journey of the Little Mermaid"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
+  },
+  {
+    "id": "epcot-005",
+    "category": "epcot",
+    "question": "What geometric structure is Spaceship Earth at the entrance to EPCOT?",
+    "choices": ["A geodesic sphere", "A pyramid", "A suspension bridge", "A spiral tower"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
+  },
+  {
+    "id": "hs-005",
+    "category": "hollywood-studios",
+    "question": "Which attraction takes guests into a haunted Hollywood hotel inspired by a classic television anthology series?",
+    "choices": ["The Twilight Zone Tower of Terror", "Rock 'n' Roller Coaster", "Muppet*Vision 3D", "Star Tours"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
+  },
+  {
+    "id": "ak-005",
+    "category": "animal-kingdom",
+    "question": "What is the name of the wildlife reserve guests visit on Kilimanjaro Safaris?",
+    "choices": ["Harambe Wildlife Reserve", "Maharajah Jungle Reserve", "Pangani Forest Preserve", "Discovery Island Sanctuary"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
+  },
+  {
+    "id": "res-005",
+    "category": "resorts",
+    "question": "Which Walt Disney World resort is themed around the South Pacific and sits along Seven Seas Lagoon?",
+    "choices": ["Disney's Polynesian Village Resort", "Disney's Grand Floridian Resort", "Disney's Contemporary Resort", "Disney's Wilderness Lodge"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
+  },
+  {
+    "id": "din-005",
+    "category": "dining",
+    "question": "Which restaurant is located at the top of Disney's Contemporary Resort?",
+    "choices": ["California Grill", "Chef Mickey's", "Steakhouse 71", "The Wave"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
+  },
+  {
+    "id": "trans-005",
+    "category": "transportation",
+    "question": "Which two theme parks are directly connected by the Disney Skyliner?",
+    "choices": ["EPCOT and Disney's Hollywood Studios", "Magic Kingdom and EPCOT", "Animal Kingdom and Magic Kingdom", "EPCOT and Animal Kingdom"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
+  },
+  {
+    "id": "show-005",
+    "category": "shows-entertainment",
+    "question": "Which live stage show at Disney's Animal Kingdom features music and scenes from The Lion King?",
+    "choices": ["Festival of the Lion King", "Finding Nemo: The Big Blue... and Beyond!", "Feathered Friends in Flight!", "A Celebration of Festival of the Lion King"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
+  },
+  {
+    "id": "hist-005",
+    "category": "history",
+    "question": "In what year did EPCOT open to guests?",
+    "choices": ["1982", "1971", "1989", "1998"],
+    "answerIndex": 0,
+    "date": "2026-11-18"
   }
 ]
