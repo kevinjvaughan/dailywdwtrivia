@@ -32,62 +32,22 @@ const CATEGORY_LABELS = {
  * Each question has a unique ID, category, question text, four choices,
  * the correct answer index, and optional explanation.
  */
-/** @typedef {{ id: string, category: string, question: string, choices: string[], answerIndex: number, explanation?: string, date?: string }} TriviaQuestion */
+/** @typedef {{ id: string, category: string, question: string, choices: string[], answerIndex: number, explanation?: string }} TriviaQuestion */
 
 /**
- * Fallback questions array embedded in the page.
- * Used if data/questions.json fails to load (e.g., offline mode).
- * In production, these are overwritten by fetchQuestions() with live data.
+ * Fallback questions used when the live JSON file cannot be loaded.
+ */
 let QUESTIONS = [
-  { "id": "mk-001", "category": "magic-kingdom", "question": "Which Magic Kingdom attraction contains a queue with a pet cemetery featuring 13 small gravestones?", "choices": ["The Haunted Mansion", "Pirates of the Caribbean", "The Enchanted Tiki Room", "Jungle Cruise"], "answerIndex": 0 },
-  { "id": "mk-002", "category": "magic-kingdom", "question": "Cinderella Castle reaches approximately what height above its surrounding moat?", "choices": ["189 feet", "155 feet", "170 feet", "205 feet"], "answerIndex": 0 },
-  { "id": "mk-003", "category": "magic-kingdom", "question": "In 1975, what name was used for the elevated Tomorrowland transportation attraction that later became the Tomorrowland Transit Authority PeopleMover?", "choices": ["WEDWay PeopleMover", "Tomorrowland Speedway", "StarJets", "Astro Orbiter"], "answerIndex": 0 },
-  { "id": "mk-004", "category": "magic-kingdom", "question": "Which former Magic Kingdom show moved to Tokyo Disneyland and reopened there in 1983?", "choices": ["The Mickey Mouse Revue", "Country Bear Jamboree", "If You Had Wings", "America Sings"], "answerIndex": 0 },
-  { "id": "epcot-001", "category": "epcot", "question": "Which EPCOT pavilion was sponsored by Exxon and later featured Ellen's Energy Adventure?", "choices": ["Universe of Energy", "Horizons", "The Land", "Wonders of Life"], "answerIndex": 0 },
-  { "id": "epcot-002", "category": "epcot", "question": "How many nations had permanent World Showcase pavilions when EPCOT opened in 1982?", "choices": ["Nine", "Eight", "Seven", "Eleven"], "answerIndex": 0 },
-  { "id": "epcot-003", "category": "epcot", "question": "The 2007 version of a Circle-Vision 360 film, hosted by Martin Short, appeared in which World Showcase pavilion?", "choices": ["France", "Canada", "United Kingdom", "Italy"], "answerIndex": 1 },
-  { "id": "epcot-004", "category": "epcot", "question": "Which pavilion features a boat ride through greenhouses and a rotating restaurant overlooking working gardens?", "choices": ["The Land", "The Seas", "Imagination!", "Journey of Water"], "answerIndex": 0 },
-  { "id": "hs-001", "category": "hollywood-studios", "question": "What was the park now called Disney's Hollywood Studios originally named when it opened in 1989?", "choices": ["Disney-MGM Studios", "MGM Adventure Park", "Hollywood Disney Studios", "Disney Motion Pictures"], "answerIndex": 0 },
-  { "id": "hs-002", "category": "hollywood-studios", "question": "In which year did the Twilight Zone Tower of Terror first open at Disney's Hollywood Studios?", "choices": ["1994", "1989", "1998", "2001"], "answerIndex": 0 },
-  { "id": "hs-003", "category": "hollywood-studios", "question": "Which Hollywood Studios attraction opened with the park in 1989 inside a replica of Grauman's Chinese Theatre?", "choices": ["The Great Movie Ride", "Star Tours", "Indiana Jones Epic Stunt Spectacular", "Muppet*Vision 3D"], "answerIndex": 0 },
-  { "id": "hs-004", "category": "hollywood-studios", "question": "Fantasmic! began its run at Disney's Hollywood Studios in which year?", "choices": ["1998", "1991", "2001", "2011"], "answerIndex": 0 },
-  { "id": "ak-001", "category": "animal-kingdom", "question": "In which year did Disney's Animal Kingdom officially open to guests?", "choices": ["1998", "1991", "2001", "1989"], "answerIndex": 0 },
-  { "id": "ak-002", "category": "animal-kingdom", "question": "Approximately how tall is the Tree of Life in the center of Discovery Island?", "choices": ["145 feet", "125 feet", "189 feet", "200 feet"], "answerIndex": 0 },
-  { "id": "ak-003", "category": "animal-kingdom", "question": "Which major themed land opened at Disney's Animal Kingdom on May 27, 2017?", "choices": ["Pandora - The World of Avatar", "Dinoland, U.S.A.", "Asia", "Africa"], "answerIndex": 0 },
-  { "id": "ak-004", "category": "animal-kingdom", "question": "Expedition Everest reaches approximately what height at its summit?", "choices": ["199 feet", "150 feet", "250 feet", "189 feet"], "answerIndex": 0 },
-  { "id": "res-001", "category": "resorts", "question": "Which resort was one of the original Walt Disney World hotels that opened on October 1, 1971?", "choices": ["Disney's Contemporary Resort", "Disney's Grand Floridian Resort", "Disney's Caribbean Beach Resort", "Disney's Wilderness Lodge"], "answerIndex": 0 },
-  { "id": "res-002", "category": "resorts", "question": "The architecture and lobby of which deluxe resort draw inspiration from Yellowstone National Park's Old Faithful Inn?", "choices": ["Disney's Wilderness Lodge", "Disney's Polynesian Village Resort", "Disney's Port Orleans Resort", "Disney's BoardWalk Inn"], "answerIndex": 0 },
-  { "id": "res-003", "category": "resorts", "question": "Which resort is themed after turn-of-the-century Atlantic City and sits beside Crescent Lake?", "choices": ["Disney's BoardWalk Inn", "Disney's Yacht Club Resort", "Disney's Beach Club Resort", "Disney's Saratoga Springs Resort"], "answerIndex": 0 },
-  { "id": "res-004", "category": "resorts", "question": "Which moderate resort opened in 1988 and is divided into themed sections named for Caribbean islands?", "choices": ["Disney's Caribbean Beach Resort", "Disney's Coronado Springs Resort", "Disney's Port Orleans Resort", "The Cabins at Disney's Fort Wilderness"], "answerIndex": 0 },
-  { "id": "din-001", "category": "dining", "question": "The restaurant Be Our Guest is located inside a themed Beast's Castle in which park?", "choices": ["Magic Kingdom", "EPCOT", "Disney's Hollywood Studios", "Disney's Animal Kingdom"], "answerIndex": 0 },
-  { "id": "din-002", "category": "dining", "question": "Which Animal Kingdom Lodge restaurant is known for African and Indian-inspired dishes and views of Savanna animals?", "choices": ["Sanaa", "Jiko", "Boma", "The Mara"], "answerIndex": 0 },
-  { "id": "din-003", "category": "dining", "question": "A 1950s television family set, complete with a kitchen table and pink-and-black decor, defines which Hollywood Studios restaurant?", "choices": ["50's Prime Time Café", "Sci-Fi Dine-In Theater", "Mama Melrose's Ristorante Italiano", "The Hollywood Brown Derby"], "answerIndex": 0 },
-  { "id": "din-004", "category": "dining", "question": "Which Grand Floridian restaurant became Florida's first AAA Five Diamond restaurant?", "choices": ["Victoria & Albert's", "Citricos", "Narcoossee's", "Grand Floridian Cafe"], "answerIndex": 0 },
-  { "id": "trans-001", "category": "transportation", "question": "In which year did the Disney Skyliner transportation system begin public operation?", "choices": ["2019", "2017", "2018", "2020"], "answerIndex": 0 },
-  { "id": "trans-002", "category": "transportation", "question": "The Walt Disney World Resort monorail system began operating on the same date as the opening of which park?", "choices": ["Magic Kingdom", "EPCOT", "Disney's Hollywood Studios", "Disney's Animal Kingdom"], "answerIndex": 0 },
-  { "id": "trans-003", "category": "transportation", "question": "Which water route connects Disney's Port Orleans resorts with Disney Springs?", "choices": ["Sassagoula River Cruise", "Seven Seas Lagoon ferry", "Canal Boats of Crescent Lake", "FriendShip Boat"], "answerIndex": 0 },
-  { "id": "trans-004", "category": "transportation", "question": "Which monorail line travels directly between EPCOT and the Transportation and Ticket Center?", "choices": ["The EPCOT Line", "The Resort Line", "The Express Line", "The Seven Seas Line"], "answerIndex": 0 },
-  { "id": "show-001", "category": "shows-entertainment", "question": "Fantasmic! originally debuted at Disney's Hollywood Studios in which year?", "choices": ["1998", "1995", "2001", "2011"], "answerIndex": 0 },
-  { "id": "show-002", "category": "shows-entertainment", "question": "Which Magic Kingdom daytime parade debuted on March 9, 2014?", "choices": ["Festival of Fantasy", "Dreams Come True Parade", "Disney Stars and Motor Cars", "Move It! Shake It!"], "answerIndex": 0 },
-  { "id": "show-003", "category": "shows-entertainment", "question": "The Voices of Liberty sing in the rotunda of which EPCOT pavilion?", "choices": ["The American Adventure", "The Land", "Canada", "Spaceship Earth"], "answerIndex": 0 },
-  { "id": "show-004", "category": "shows-entertainment", "question": "Which nighttime spectacular premiered at Magic Kingdom on October 1, 2017?", "choices": ["Happily Ever After", "Disney Enchantment", "Wishes", "Remember... Dreams Come True"], "answerIndex": 0 },
-  { "id": "hist-001", "category": "history", "question": "On what date did Walt Disney World officially open to guests?", "choices": ["October 1, 1971", "October 25, 1971", "October 1, 1982", "July 17, 1955"], "answerIndex": 0 },
-  { "id": "hist-002", "category": "history", "question": "In which year was the Reedy Creek Improvement District established by Florida?", "choices": ["1967", "1959", "1971", "1982"], "answerIndex": 0 },
-  { "id": "hist-003", "category": "history", "question": "Which Disney family member dedicated Walt Disney World at the 1971 opening ceremony?", "choices": ["Roy O. Disney", "Roy E. Disney", "Lillian Disney", "Card Walker"], "answerIndex": 0 },
-  { "id": "hist-004", "category": "history", "question": "What land-development codename was used for the Walt Disney World project before its public announcement?", "choices": ["The Florida Project", "Project X", "Project Tomorrow", "Project Florida"], "answerIndex": 0 }
+  {"id": "mk-001", "category": "magic-kingdom", "question": "Which Magic Kingdom attraction contains a queue with a pet cemetery featuring 13 small gravestones?", "choices": ["The Haunted Mansion", "Pirates of the Caribbean", "The Enchanted Tiki Room", "Jungle Cruise"], "answerIndex": 0},
+  {"id": "epcot-001", "category": "epcot", "question": "Which EPCOT pavilion was sponsored by Exxon and later featured Ellen's Energy Adventure?", "choices": ["Universe of Energy", "Horizons", "The Land", "Wonders of Life"], "answerIndex": 0},
+  {"id": "hs-001", "category": "hollywood-studios", "question": "What was the park now called Disney's Hollywood Studios originally named when it opened in 1989?", "choices": ["Disney-MGM Studios", "MGM Adventure Park", "Hollywood Disney Studios", "Disney Motion Pictures"], "answerIndex": 0},
+  {"id": "ak-001", "category": "animal-kingdom", "question": "In which year did Disney's Animal Kingdom officially open to guests?", "choices": ["1998", "1991", "2001", "1989"], "answerIndex": 0},
+  {"id": "res-001", "category": "resorts", "question": "Which resort was one of the original Walt Disney World hotels that opened on October 1, 1971?", "choices": ["Disney's Contemporary Resort", "Disney's Grand Floridian Resort", "Disney's Caribbean Beach Resort", "Disney's Wilderness Lodge"], "answerIndex": 0},
+  {"id": "din-001", "category": "dining", "question": "The restaurant Be Our Guest is located inside a themed Beast's Castle in which park?", "choices": ["Magic Kingdom", "EPCOT", "Disney's Hollywood Studios", "Disney's Animal Kingdom"], "answerIndex": 0},
+  {"id": "trans-001", "category": "transportation", "question": "In which year did the Disney Skyliner transportation system begin public operation?", "choices": ["2019", "2017", "2018", "2020"], "answerIndex": 0},
+  {"id": "show-001", "category": "shows-entertainment", "question": "Fantasmic! originally debuted at Disney's Hollywood Studios in which year?", "choices": ["1998", "1995", "2001", "2011"], "answerIndex": 0},
+  {"id": "hist-001", "category": "history", "question": "On what date did Walt Disney World officially open to guests?", "choices": ["October 1, 1971", "October 25, 1971", "October 1, 1982", "July 17, 1955"], "answerIndex": 0}
 ];
-
-QUESTIONS.push(
-  { "id": "mk-005", "category": "magic-kingdom", "question": "Which attraction replaced Mr. Toad's Wild Ride in Fantasyland at Magic Kingdom?", "choices": ["The Many Adventures of Winnie the Pooh", "Peter Pan's Flight", "The Barnstormer", "Under the Sea - Journey of the Little Mermaid"], "answerIndex": 0, "date": "2026-11-18" },
-  { "id": "epcot-005", "category": "epcot", "question": "What geometric structure is Spaceship Earth at the entrance to EPCOT?", "choices": ["A geodesic sphere", "A pyramid", "A suspension bridge", "A spiral tower"], "answerIndex": 0, "date": "2026-11-18" },
-  { "id": "hs-005", "category": "hollywood-studios", "question": "Which attraction takes guests into a haunted Hollywood hotel inspired by a classic television anthology series?", "choices": ["The Twilight Zone Tower of Terror", "Rock 'n' Roller Coaster", "Muppet*Vision 3D", "Star Tours"], "answerIndex": 0, "date": "2026-11-18" },
-  { "id": "ak-005", "category": "animal-kingdom", "question": "What is the name of the wildlife reserve guests visit on Kilimanjaro Safaris?", "choices": ["Harambe Wildlife Reserve", "Maharajah Jungle Reserve", "Pangani Forest Preserve", "Discovery Island Sanctuary"], "answerIndex": 0, "date": "2026-11-18" },
-  { "id": "res-005", "category": "resorts", "question": "Which Walt Disney World resort is themed around the South Pacific and sits along Seven Seas Lagoon?", "choices": ["Disney's Polynesian Village Resort", "Disney's Grand Floridian Resort", "Disney's Contemporary Resort", "Disney's Wilderness Lodge"], "answerIndex": 0, "date": "2026-11-18" },
-  { "id": "din-005", "category": "dining", "question": "Which restaurant is located at the top of Disney's Contemporary Resort?", "choices": ["California Grill", "Chef Mickey's", "Steakhouse 71", "The Wave"], "answerIndex": 0, "date": "2026-11-18" },
-  { "id": "trans-005", "category": "transportation", "question": "Which two theme parks are directly connected by the Disney Skyliner?", "choices": ["EPCOT and Disney's Hollywood Studios", "Magic Kingdom and EPCOT", "Animal Kingdom and Magic Kingdom", "EPCOT and Animal Kingdom"], "answerIndex": 0, "date": "2026-11-18" },
-  { "id": "show-005", "category": "shows-entertainment", "question": "Which live stage show at Disney's Animal Kingdom features music and scenes from The Lion King?", "choices": ["Festival of the Lion King", "Finding Nemo: The Big Blue... and Beyond!", "Feathered Friends in Flight!", "A Celebration of Festival of the Lion King"], "answerIndex": 0, "date": "2026-11-18" },
-  { "id": "hist-005", "category": "history", "question": "In what year did EPCOT open to guests?", "choices": ["1982", "1971", "1989", "1998"], "answerIndex": 0, "date": "2026-11-18" }
-);
 
 // ============================================================================
 // STATE MANAGEMENT
@@ -267,28 +227,13 @@ function setModalOpen(isOpen) {
 // ============================================================================
 
 /**
- * Picks a deterministic question for a given category based on today's date.
- * Same question appears every day until tomorrow, ensuring consistent daily gameplay.
+ * Returns the configured question for a category.
  * @param {TriviaQuestion[]} questions - Array of question objects
  * @param {string} category - The category identifier to filter by
  * @returns {TriviaQuestion|null} The selected question or null if category not found
  */
 function sampleQuestion(questions, category) {
-  const todayKey = getTodayKey();
-  const todayQuestions = questions.filter((q) => q && q.category === category && q.date === todayKey);
-  const inCat = todayQuestions.length
-    ? todayQuestions
-    : questions.filter((q) => q && q.category === category && !q.date);
-  if (inCat.length === 0) return null;
-  // Deterministic per-day selection so questions rotate every calendar day.
-  // Hash the date + category to pick the same question for everyone today.
-  const key = `${todayKey}-${category}`;
-  let hash = 0;
-  for (let i = 0; i < key.length; i++) {
-    hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
-  }
-  const idx = hash % inCat.length;
-  return inCat[idx];
+  return questions.find((q) => q && q.category === category) || null;
 }
 
 /**

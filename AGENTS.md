@@ -33,19 +33,17 @@ There are no tests, linters, or CI pipelines configured.
 
 1. On page load, `initUI()` fetches `data/questions.json` (falls back to a hardcoded `QUESTIONS` array in `app.js` if fetch fails).
 2. Each category button has a `data-category` attribute matching keys in `CATEGORY_LABELS` and `category` values in the JSON.
-3. Clicking a category opens the modal and calls `sampleQuestion()`, which deterministically picks a question using a date+category hash so every user sees the same question that day.
+3. Clicking a category opens the modal and calls `sampleQuestion()`, which returns that category's question from the JSON.
 4. After answering, state is saved to `localStorage` under key `wdwtrivia_state` via `saveCategoryState()`, and the category card turns green/red via `data-state` attribute.
 5. On reload, `loadGameState()` restores card colors and locks already-answered categories.
 
-### Adding new questions
+### Updating the daily questions
 
-Add objects to `data/questions.json` following the existing schema:
+Keep exactly one question for each category in `data/questions.json`. Update the existing question objects each day; the site does not rotate questions automatically. Each object follows this schema:
 
 ```json
 { "id": "<prefix>-NNN", "category": "<category-slug>", "question": "...", "choices": ["A","B","C","D"], "answerIndex": 0 }
 ```
-
-For a one-day question override, add an optional `date` using the local date key format (`YYYY-M-D`). Questions with a matching date take precedence for that category on that day and are excluded from the normal question rotation.
 
 The `category` value must match one of the keys in `CATEGORY_LABELS` (in `js/app.js`) and the `data-category` attributes in `index.html`. The nine current categories are: `magic-kingdom`, `epcot`, `hollywood-studios`, `animal-kingdom`, `resorts`, `dining`, `transportation`, `shows-entertainment`, `history`.
 
